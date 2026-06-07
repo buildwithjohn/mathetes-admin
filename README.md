@@ -68,6 +68,14 @@ Phase 6 admin (Announcements + Ask Pastor):
 > apply it in `../mathetes-backend`, then regenerate types. Until then the table
 > types in `src/lib/database.types.ts` are hand-written to match that schema.
 
+Phase 7 moderation:
+
+- **`POST /api/moderate`** proxies the OpenAI Moderation API
+  (`omni-moderation-latest`). Body: `{ input: string | string[] }`; returns
+  `{ flagged, results[] }`. Used by the backend moderate-message hook. Reports
+  503 (disabled) when `OPENAI_API_KEY` is unset, and requires
+  `Authorization: Bearer <MODERATION_SECRET>` when that secret is configured.
+
 Members and analytics arrive in later phases (see the build plan). Generated
 database types live in `src/lib/database.types.ts`; regenerate from the backend
 after migrations.
