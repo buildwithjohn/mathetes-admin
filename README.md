@@ -40,6 +40,18 @@ Phase 2 content authoring:
   protection per date, and a mobile preview.
 - **Dashboard** reads live Word of the Day and devotional counts.
 
-Announcements, Ask Pastor, members, analytics, and the verse-image API arrive in
-later phases (see the build plan). Generated database types live in
-`src/lib/database.types.ts`; regenerate from the backend after migrations.
+Phase 4 verse images:
+
+- **`POST /api/verse-image`** generates a verse image with `next/og`. Body:
+  `verseText`, `verseRef`, `theme` (`minimal` | `organic` | `bold`),
+  `aspectRatio` (`square` 1080×1080 | `story` 1080×1920), `watermark`. A `GET`
+  with the same query params is available for quick previews. Fraunces/Inter are
+  loaded from Google Fonts at render time, with a graceful fallback. When
+  `SUPABASE_SERVICE_ROLE_KEY` is set the PNG is cached to the public
+  `verse-images` Storage bucket and a JSON `{ url }` is returned; otherwise the
+  PNG bytes stream back directly. (The `verse_images` gallery insert lands once
+  that backend table is migrated.)
+
+Announcements, Ask Pastor, members, and analytics arrive in later phases (see
+the build plan). Generated database types live in `src/lib/database.types.ts`;
+regenerate from the backend after migrations.
