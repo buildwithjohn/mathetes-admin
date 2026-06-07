@@ -14,6 +14,9 @@ export type Json =
   | Json[];
 
 export type ContentStatus = "draft" | "scheduled" | "published";
+export type AnnouncementBanner = "event" | "urgent";
+export type AskPrivacy = "public" | "private";
+export type AskStatus = "awaiting" | "answered";
 export type UserRole =
   | "member"
   | "house_leader"
@@ -302,6 +305,99 @@ export interface Database {
           word_of_day_id?: string | null;
           url?: string;
           kind?: "image" | "audio";
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      announcements: {
+        Row: {
+          id: string;
+          parish_id: string;
+          title: string;
+          body_md: string;
+          event_data: Json | null;
+          banner: AnnouncementBanner | null;
+          photos: string[];
+          status: ContentStatus;
+          publish_date: string | null;
+          posted_at: string | null;
+          posted_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parish_id: string;
+          title: string;
+          body_md?: string;
+          event_data?: Json | null;
+          banner?: AnnouncementBanner | null;
+          photos?: string[];
+          status?: ContentStatus;
+          publish_date?: string | null;
+          posted_at?: string | null;
+          posted_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parish_id?: string;
+          title?: string;
+          body_md?: string;
+          event_data?: Json | null;
+          banner?: AnnouncementBanner | null;
+          photos?: string[];
+          status?: ContentStatus;
+          publish_date?: string | null;
+          posted_at?: string | null;
+          posted_by?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      ask_questions: {
+        Row: {
+          id: string;
+          parish_id: string;
+          asker_id: string;
+          body: string;
+          category: string | null;
+          privacy: AskPrivacy;
+          urgent: boolean;
+          status: AskStatus;
+          response_body: string | null;
+          answered_at: string | null;
+          answered_by: string | null;
+          public_anonymized: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parish_id: string;
+          asker_id: string;
+          body: string;
+          category?: string | null;
+          privacy?: AskPrivacy;
+          urgent?: boolean;
+          status?: AskStatus;
+          response_body?: string | null;
+          answered_at?: string | null;
+          answered_by?: string | null;
+          public_anonymized?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parish_id?: string;
+          asker_id?: string;
+          body?: string;
+          category?: string | null;
+          privacy?: AskPrivacy;
+          urgent?: boolean;
+          status?: AskStatus;
+          response_body?: string | null;
+          answered_at?: string | null;
+          answered_by?: string | null;
+          public_anonymized?: boolean;
           created_at?: string;
         };
         Relationships: [];

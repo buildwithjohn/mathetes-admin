@@ -31,6 +31,13 @@ export default async function DashboardPage() {
   const scheduledCount =
     weekDevos?.filter((d) => d.status === "scheduled").length ?? 0;
 
+  // Awaiting Ask Pastor questions.
+  const { count: awaitingCount } = await supabase
+    .from("ask_questions")
+    .select("id", { count: "exact", head: true })
+    .eq("parish_id", profile.parish_id!)
+    .eq("status", "awaiting");
+
   const wotdBody = wotd
     ? wotd.status === "published"
       ? `Live: ${wotd.verse_ref}`
@@ -52,7 +59,7 @@ export default async function DashboardPage() {
     },
     {
       title: "Pending Ask Pastor",
-      body: "Arrives in Phase 6.",
+      body: `${awaitingCount ?? 0} awaiting response.`,
       hint: "48-hour response window.",
       href: "/ask-pastor",
     },

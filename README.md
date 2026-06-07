@@ -52,6 +52,22 @@ Phase 4 verse images:
   PNG bytes stream back directly. (The `verse_images` gallery insert lands once
   that backend table is migrated.)
 
-Announcements, Ask Pastor, members, and analytics arrive in later phases (see
-the build plan). Generated database types live in `src/lib/database.types.ts`;
-regenerate from the backend after migrations.
+Phase 6 admin (Announcements + Ask Pastor):
+
+- **Announcements** (`/announcements`): list, plus a composer with rich-text
+  body, an Event/Urgent banner, optional event details (date, time, location),
+  photo URLs, a mobile preview, and draft / schedule / post-now / delete.
+- **Ask Pastor** (`/ask-pastor`): question queue with awaiting / answered /
+  public / private filters, urgency ordering, and a detail view to respond
+  either publicly (anonymized to the public Q&A) or privately to the asker.
+- **Dashboard** now also shows the awaiting Ask Pastor count.
+
+> These two features require the `announcements` and `ask_questions` tables,
+> which are **not yet in the backend migrations**. The proposed migration is
+> pinned at [`docs/backend/0003_announcements_ask_pastor.sql`](docs/backend/0003_announcements_ask_pastor.sql);
+> apply it in `../mathetes-backend`, then regenerate types. Until then the table
+> types in `src/lib/database.types.ts` are hand-written to match that schema.
+
+Members and analytics arrive in later phases (see the build plan). Generated
+database types live in `src/lib/database.types.ts`; regenerate from the backend
+after migrations.
