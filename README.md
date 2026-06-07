@@ -49,8 +49,9 @@ Phase 4 verse images:
   loaded from Google Fonts at render time, with a graceful fallback. When
   `SUPABASE_SERVICE_ROLE_KEY` is set the PNG is cached to the public
   `verse-images` Storage bucket and a JSON `{ url }` is returned; otherwise the
-  PNG bytes stream back directly. (The `verse_images` gallery insert lands once
-  that backend table is migrated.)
+  PNG bytes stream back directly. (The `verse_images` gallery table exists in
+  the backend as migration 0011; the gallery insert is wired once the request
+  carries the requesting user's id.)
 
 Phase 6 admin (Announcements + Ask Pastor):
 
@@ -62,11 +63,12 @@ Phase 6 admin (Announcements + Ask Pastor):
   either publicly (anonymized to the public Q&A) or privately to the asker.
 - **Dashboard** now also shows the awaiting Ask Pastor count.
 
-> These two features require the `announcements` and `ask_questions` tables,
-> which are **not yet in the backend migrations**. The proposed migration is
-> pinned at [`docs/backend/0003_announcements_ask_pastor.sql`](docs/backend/0003_announcements_ask_pastor.sql);
-> apply it in `../mathetes-backend`, then regenerate types. Until then the table
-> types in `src/lib/database.types.ts` are hand-written to match that schema.
+> These features map to backend tables that now exist in `../mathetes-backend`:
+> `ask_questions` (migration 0008, with the `answer_question()` RPC and
+> `public_qa` view) and `announcements` (migration 0013). The hand-written
+> entries in `src/lib/database.types.ts` match those schemas; regenerate from
+> the backend (`./scripts/generate-types.sh`) to replace them with the
+> authoritative generated types.
 
 Phase 7 moderation:
 
