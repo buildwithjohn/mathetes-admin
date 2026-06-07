@@ -27,6 +27,19 @@ npm run dev                  # http://localhost:3000
 ## Status
 
 Phase 0 foundation: brand tokens, fonts, Supabase SSR wiring, auth middleware,
-landing page, sign-in, and an admin shell with dashboard skeleton. Devotional
-editor, Word of the Day composer, announcements, Ask Pastor, and the verse-image
-API arrive in later phases (see the build plan).
+landing page, sign-in, and an admin shell.
+
+Phase 2 content authoring:
+
+- **Devotionals** (`/devotionals`): list with status/series filters, TipTap
+  rich-text editor with a Scripture (verse) block, scripture references,
+  auto-calculated reading time, series creation, draft autosave (30s), unsaved
+  changes guard, a live mobile preview, and schedule / publish / delete.
+- **Word of the Day** (`/word-of-day`): a 3-month calendar with per-day status,
+  a side-sheet composer (verse reference, text, reflection, prompt), duplicate
+  protection per date, and a mobile preview.
+- **Dashboard** reads live Word of the Day and devotional counts.
+
+Announcements, Ask Pastor, members, analytics, and the verse-image API arrive in
+later phases (see the build plan). Generated database types live in
+`src/lib/database.types.ts`; regenerate from the backend after migrations.

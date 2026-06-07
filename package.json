@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.45.4",
     "@hookform/resolvers": "^3.9.0",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.107.0",
     "@tiptap/extension-typography": "^2.6.6",
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
@@ -20,6 +20,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.441.0",
+    "marked": "^14.1.4",
     "next": "15.0.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -27,6 +28,7 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "tiptap-markdown": "^0.8.10",
     "zod": "^3.23.8"
   },
   "devDependencies": {

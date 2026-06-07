@@ -38,3 +38,97 @@ body {
   font-family: var(--font-inter), Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ------------------------------------------------------------------ */
+/* Devotional editor (TipTap) + mobile-style preview                   */
+/* ------------------------------------------------------------------ */
+
+.prose-editor p {
+  margin: 0 0 0.85em;
+  line-height: 1.7;
+}
+.prose-editor h2,
+.prose-editor h3 {
+  font-family: var(--font-fraunces), Fraunces, serif;
+  color: var(--ink);
+  margin: 1.1em 0 0.4em;
+  line-height: 1.2;
+}
+.prose-editor h2 {
+  font-size: 1.5rem;
+}
+.prose-editor h3 {
+  font-size: 1.2rem;
+}
+.prose-editor ul,
+.prose-editor ol {
+  margin: 0 0 0.85em;
+  padding-left: 1.4em;
+}
+.prose-editor ul {
+  list-style: disc;
+}
+.prose-editor ol {
+  list-style: decimal;
+}
+.prose-editor :is(.verse-block, blockquote) {
+  border-left: 3px solid var(--oxblood);
+  margin: 1em 0;
+  padding: 0.2em 0 0.2em 1em;
+  color: var(--ink);
+  font-style: italic;
+}
+.prose-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: rgba(28, 27, 26, 0.35);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Read-only preview rendered from Markdown (marked). */
+.devotional-preview {
+  font-family: var(--font-scripture), "Source Serif 4", serif;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.devotional-preview > p:first-of-type::first-letter {
+  font-family: var(--font-fraunces), Fraunces, serif;
+  font-size: 3.1rem;
+  line-height: 0.8;
+  float: left;
+  padding: 0.08em 0.12em 0 0;
+  color: var(--oxblood);
+}
+.devotional-preview p {
+  margin: 0 0 0.9em;
+}
+.devotional-preview h2,
+.devotional-preview h3 {
+  font-family: var(--font-fraunces), Fraunces, serif;
+  margin: 1.1em 0 0.4em;
+}
+.devotional-preview h2 {
+  font-size: 1.4rem;
+}
+.devotional-preview h3 {
+  font-size: 1.15rem;
+}
+.devotional-preview ul,
+.devotional-preview ol {
+  margin: 0 0 0.9em;
+  padding-left: 1.4em;
+}
+.devotional-preview ul {
+  list-style: disc;
+}
+.devotional-preview ol {
+  list-style: decimal;
+}
+.devotional-preview blockquote {
+  border-left: 3px solid var(--oxblood);
+  margin: 1em 0;
+  padding: 0.2em 0 0.2em 1em;
+  font-style: italic;
+}
