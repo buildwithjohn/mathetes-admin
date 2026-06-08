@@ -28,7 +28,7 @@ export default async function AskPastorPage({
   let query = supabase
     .from("ask_questions")
     .select(
-      "id, body, category, privacy, urgent, status, public_anonymized, created_at, asker_id"
+      "id, body, category, privacy, urgent, status, created_at, asker_id"
     )
     .eq("parish_id", profile.parish_id!)
     .order("urgent", { ascending: false })

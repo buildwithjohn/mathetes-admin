@@ -21,6 +21,9 @@ const schema = z.object({
   theme: z.enum(["minimal", "organic", "bold"]).default("minimal"),
   aspectRatio: z.enum(["square", "story"]).default("square"),
   watermark: z.boolean().default(true),
+  // Optional: the requesting user's profile id. When present (and Storage is
+  // configured) the generated image is recorded in their verse_images gallery.
+  userId: z.string().uuid().optional(),
 });
 
 type Params = z.infer<typeof schema>;
@@ -87,7 +90,23 @@ async function respond(p: Params): Promise<Response> {
     data: { publicUrl },
   } = admin.storage.from(BUCKET).getPublicUrl(path);
 
-  return Response.json({ url: publicUrl, hash, cached: true });
+  // Record the image in the user's gallery when a profile id was supplied.
+  // Best-effort: a gallery failure should not fail image delivery.
+  let gallery = false;
+  if (p.userId) {
+    const { error: insertError } = await admin.from("verse_images").insert({
+      user_id: p.userId,
+      verse_ref: p.verseRef,
+      verse_text: p.verseText,
+      theme: p.theme,
+      aspect_ratio: p.aspectRatio,
+      watermark: p.watermark,
+      url: publicUrl,
+    });
+    gallery = !insertError;
+  }
+
+  return Response.json({ url: publicUrl, hash, cached: true, gallery });
 }
 
 export async function POST(request: Request): Promise<Response> {

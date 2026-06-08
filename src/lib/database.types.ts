@@ -402,6 +402,42 @@ export interface Database {
         };
         Relationships: [];
       };
+      verse_images: {
+        Row: {
+          id: string;
+          user_id: string;
+          verse_ref: string;
+          verse_text: string;
+          theme: "minimal" | "organic" | "bold";
+          aspect_ratio: "square" | "story";
+          watermark: boolean;
+          url: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          verse_ref: string;
+          verse_text: string;
+          theme?: "minimal" | "organic" | "bold";
+          aspect_ratio?: "square" | "story";
+          watermark?: boolean;
+          url: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          verse_ref?: string;
+          verse_text?: string;
+          theme?: "minimal" | "organic" | "bold";
+          aspect_ratio?: "square" | "story";
+          watermark?: boolean;
+          url?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       todays_word_of_day: {
@@ -419,6 +455,10 @@ export interface Database {
       current_house_id: { Args: Record<string, never>; Returns: string };
       current_user_role: { Args: Record<string, never>; Returns: string };
       is_parish_admin: { Args: Record<string, never>; Returns: boolean };
+      answer_question: {
+        Args: { p_id: string; p_response: string; p_public?: boolean };
+        Returns: Database["public"]["Tables"]["ask_questions"]["Row"];
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

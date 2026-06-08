@@ -16,7 +16,7 @@ export default async function AskPastorDetailPage({
   const { data: question } = await supabase
     .from("ask_questions")
     .select(
-      "id, body, category, privacy, urgent, status, response_body, public_anonymized, created_at, asker_id"
+      "id, body, category, privacy, urgent, status, response_body, created_at, asker_id"
     )
     .eq("id", id)
     .eq("parish_id", profile.parish_id!)
@@ -75,7 +75,7 @@ export default async function AskPastorDetailPage({
           id={question.id}
           requestedPrivacy={question.privacy}
           initialResponse={question.response_body}
-          alreadyPublic={question.public_anonymized}
+          alreadyPublic={question.privacy === "public"}
         />
       </div>
     </div>

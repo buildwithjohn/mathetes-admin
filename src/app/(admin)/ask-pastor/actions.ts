@@ -21,19 +21,15 @@ export async function answerQuestion(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const v = parsed.data;
-  const { supabase, profile } = await requireAdmin();
+  const { supabase } = await requireAdmin();
 
-  const { error } = await supabase
-    .from("ask_questions")
-    .update({
-      response_body: v.responseBody,
-      status: "answered",
-      answered_at: new Date().toISOString(),
-      answered_by: profile.id,
-      public_anonymized: v.makePublic,
-    })
-    .eq("id", v.id)
-    .eq("parish_id", profile.parish_id!);
+  // Use the backend RPC: it sets privacy (which the public_qa feed keys off),
+  // status, answered_by/at atomically and enforces the parish-admin guard.
+  const { error } = await supabase.rpc("answer_question", {
+    p_id: v.id,
+    p_response: v.responseBody,
+    p_public: v.makePublic,
+  });
 
   if (error) return { ok: false, error: error.message };
 
