@@ -17,6 +17,14 @@ export type ContentStatus = "draft" | "scheduled" | "published";
 export type AnnouncementBanner = "event" | "urgent";
 export type AskPrivacy = "public" | "private";
 export type AskStatus = "awaiting" | "answered";
+export type ReportTargetType =
+  | "message"
+  | "user"
+  | "prayer_request"
+  | "ask_question";
+export type ReportStatus = "open" | "reviewing" | "resolved" | "dismissed";
+export type ModerationSeverity = "low" | "medium" | "high";
+export type ModerationAction = "logged" | "soft_deleted" | "escalated";
 export type UserRole =
   | "member"
   | "house_leader"
@@ -108,6 +116,8 @@ export interface Database {
           dept: string | null;
           pinned_verse_ref: string | null;
           joined_at: string;
+          discipler_id: string | null;
+          campus_id: string | null;
         };
         Insert: {
           id?: string;
@@ -123,6 +133,8 @@ export interface Database {
           dept?: string | null;
           pinned_verse_ref?: string | null;
           joined_at?: string;
+          discipler_id?: string | null;
+          campus_id?: string | null;
         };
         Update: {
           id?: string;
@@ -138,6 +150,8 @@ export interface Database {
           dept?: string | null;
           pinned_verse_ref?: string | null;
           joined_at?: string;
+          discipler_id?: string | null;
+          campus_id?: string | null;
         };
         Relationships: [];
       };
@@ -434,6 +448,186 @@ export interface Database {
           aspect_ratio?: "square" | "story";
           watermark?: boolean;
           url?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      campuses: {
+        Row: {
+          id: string;
+          parish_id: string;
+          slug: string;
+          name: string;
+          is_primary: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parish_id: string;
+          slug: string;
+          name: string;
+          is_primary?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parish_id?: string;
+          slug?: string;
+          name?: string;
+          is_primary?: boolean;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      engagement_events: {
+        Row: {
+          id: string;
+          user_id: string;
+          event_type: string;
+          target_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          event_type: string;
+          target_id?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          event_type?: string;
+          target_id?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      streaks: {
+        Row: {
+          user_id: string;
+          current_count: number;
+          longest: number;
+          last_check_in: string | null;
+          grace_used_this_month: number;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          current_count?: number;
+          longest?: number;
+          last_check_in?: string | null;
+          grace_used_this_month?: number;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          current_count?: number;
+          longest?: number;
+          last_check_in?: string | null;
+          grace_used_this_month?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string;
+          type: string;
+          title: string;
+          preview: string | null;
+          target_id: string | null;
+          target_url: string | null;
+          created_at: string;
+          read_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          type: string;
+          title: string;
+          preview?: string | null;
+          target_id?: string | null;
+          target_url?: string | null;
+          created_at?: string;
+          read_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          type?: string;
+          title?: string;
+          preview?: string | null;
+          target_id?: string | null;
+          target_url?: string | null;
+          created_at?: string;
+          read_at?: string | null;
+        };
+        Relationships: [];
+      };
+      reports: {
+        Row: {
+          id: string;
+          parish_id: string;
+          reporter_id: string;
+          target_type: ReportTargetType;
+          target_id: string;
+          reason: string | null;
+          status: ReportStatus;
+          resolved_by: string | null;
+          resolved_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parish_id: string;
+          reporter_id: string;
+          target_type: ReportTargetType;
+          target_id: string;
+          reason?: string | null;
+          status?: ReportStatus;
+          resolved_by?: string | null;
+          resolved_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parish_id?: string;
+          reporter_id?: string;
+          target_type?: ReportTargetType;
+          target_id?: string;
+          reason?: string | null;
+          status?: ReportStatus;
+          resolved_by?: string | null;
+          resolved_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      moderation_log: {
+        Row: {
+          id: string;
+          message_id: string | null;
+          flag: string;
+          severity: ModerationSeverity;
+          action_taken: ModerationAction;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          message_id?: string | null;
+          flag: string;
+          severity: ModerationSeverity;
+          action_taken: ModerationAction;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          message_id?: string | null;
+          flag?: string;
+          severity?: ModerationSeverity;
+          action_taken?: ModerationAction;
           created_at?: string;
         };
         Relationships: [];

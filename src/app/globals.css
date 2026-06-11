@@ -2,15 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Mathetes design tokens as CSS variables (mirrors tailwind.config.ts). */
+/* Mathetes design tokens as CSS variables (mirrors tailwind.config.ts).
+   "YouVersion" theme: near-white UI, single red accent (--copper). */
 :root {
-  --ink: #1c1b1a;
-  --parchment: #f5f1eb;
-  --copper: #b87333;
-  --oxblood: #722f37;
+  --ink: #1a1a1a;
+  --parchment: #f7f7f8;
+  --copper: #f33a49;
+  --oxblood: #9b2c36;
   --surface-1: #ffffff;
-  --surface-2: #ede8e0;
-  --border: #d9d2c5;
+  --surface-2: #efeff1;
+  --border: #e4e4e7;
 
   --house-bethel: #b87333;
   --house-antioch: #722f37;
@@ -22,10 +23,11 @@
 }
 
 .dark {
-  --parchment: #1c1b1a;
-  --surface-1: #26241f;
-  --surface-2: #322f2a;
-  --border: #3a3631;
+  --parchment: #1c1c1f;
+  --surface-1: #1c1c1f;
+  --surface-2: #27272a;
+  --border: #3a3a3e;
+  --ink: #f7f7f8;
 }
 
 * {

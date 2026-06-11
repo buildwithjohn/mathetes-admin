@@ -1,25 +1,29 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 // Mathetes brand tokens. Hex values are canonical; never deviate.
+// "YouVersion" theme: clean near-white UI with a single red accent. The accent
+// keeps the name `copper` so existing bg-copper / text-copper / var(--copper)
+// usages cascade to the new red without renaming.
 const config: Config = {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
-        ink: "#1C1B1A",
-        parchment: "#F5F1EB",
-        copper: "#B87333",
-        oxblood: "#722F37",
+        ink: "#1A1A1A",
+        parchment: "#F7F7F8",
+        copper: "#F33A49",
+        oxblood: "#9B2C36",
         surface: {
           1: "#FFFFFF",
-          2: "#EDE8E0",
-          "1-dark": "#26241F",
-          "2-dark": "#322F2A",
+          2: "#EFEFF1",
+          "1-dark": "#1C1C1F",
+          "2-dark": "#27272A",
         },
-        border: "#D9D2C5",
-        "border-dark": "#3A3631",
-        // Seven house accent colors (avatar identity rings).
+        border: "#E4E4E7",
+        "border-dark": "#3A3A3E",
+        // Seven house accent colors (avatar identity rings). Unchanged.
         house: {
           bethel: "#B87333",
           antioch: "#722F37",
@@ -47,11 +51,11 @@ const config: Config = {
         "16": "64px",
       },
       borderColor: {
-        DEFAULT: "#D9D2C5",
+        DEFAULT: "#E4E4E7",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 };
 
 export default config;

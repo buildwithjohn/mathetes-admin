@@ -1,25 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Sun,
-  Megaphone,
-  Users,
-  MessageCircleQuestion,
-  BarChart3,
-} from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-
-const NAV = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/devotionals", label: "Devotionals", icon: BookOpen },
-  { href: "/word-of-day", label: "Word of the Day", icon: Sun },
-  { href: "/announcements", label: "Announcements", icon: Megaphone },
-  { href: "/members", label: "Members", icon: Users },
-  { href: "/ask-pastor", label: "Ask Pastor", icon: MessageCircleQuestion },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-];
+import { SidebarNav } from "@/components/admin/SidebarNav";
+import { SignOutButton } from "@/components/admin/SignOutButton";
 
 export default async function AdminLayout({
   children,
@@ -31,11 +13,10 @@ export default async function AdminLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Middleware already redirects unauthenticated users; this is defense in depth.
+  // Middleware already redirects unauthenticated users; defense in depth.
   if (!user) redirect("/signin");
 
-  // Role gate: only pastor/admin may enter. (Profile may not exist yet in a
-  // fresh local DB; treat missing profile as not-authorized.)
+  // Role gate: only pastor/admin may enter.
   const { data: profile } = await supabase
     .from("user_profiles")
     .select("name, role")
@@ -56,33 +37,32 @@ export default async function AdminLayout({
     );
   }
 
+  const name = (profile as { name?: string } | null)?.name ?? user.email;
+
   return (
     <div className="flex min-h-screen bg-parchment text-ink">
-      <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-white">
+      <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-surface-1">
         <div className="px-6 py-5">
-          <span className="font-display text-2xl">Mathetes</span>
-          <p className="text-xs uppercase tracking-widest text-copper">Admin</p>
+          <span className="font-display text-2xl tracking-tight">Mathetes</span>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-copper">
+            Admin
+          </p>
         </div>
-        <nav className="flex-1 space-y-1 px-3">
-          {NAV.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-ink/80 transition hover:bg-parchment"
-            >
-              <Icon size={18} className="text-copper" />
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <SidebarNav />
+        <div className="border-t border-border p-3">
+          <SignOutButton />
+        </div>
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border bg-white px-6 py-3">
-          <span className="text-sm font-medium">CCCFSP FUOYE</span>
-          <span className="text-sm text-ink/60">
-            {(profile as { name?: string } | null)?.name ?? user.email}
-          </span>
+        <header className="flex items-center justify-between border-b border-border bg-surface-1 px-8 py-3">
+          <span className="text-sm font-medium text-ink">CCCFSP FUOYE</span>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-ink/60">{name}</span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-copper text-xs font-semibold text-white">
+              {(name ?? "?").slice(0, 1).toUpperCase()}
+            </span>
+          </div>
         </header>
         <main className="flex-1 p-8">{children}</main>
       </div>

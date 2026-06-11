@@ -12,6 +12,7 @@ const ADMIN_PREFIXES = [
   "/announcements",
   "/members",
   "/ask-pastor",
+  "/moderation",
   "/analytics",
 ];
 
