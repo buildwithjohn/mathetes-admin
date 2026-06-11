@@ -14,6 +14,13 @@ const devotionalSchema = z
     bodyMd: z.string().default(""),
     scriptureRefs: z.array(z.string().trim().min(1)).default([]),
     readingTimeMinutes: z.number().int().positive().nullable().optional(),
+    audioUrl: z
+      .string()
+      .trim()
+      .url("Audio must be a URL")
+      .nullable()
+      .optional()
+      .or(z.literal("")),
     publishDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
     status: z.enum(["draft", "scheduled", "published"]),
   })
@@ -46,6 +53,7 @@ export async function saveDevotional(
     body_md: v.bodyMd,
     scripture_refs: v.scriptureRefs,
     reading_time_minutes: v.readingTimeMinutes ?? null,
+    audio_url: v.audioUrl ? v.audioUrl : null,
     publish_date: v.publishDate ?? null,
     status: v.status,
   };

@@ -5,7 +5,15 @@ import { useRouter } from "next/navigation";
 import { marked } from "marked";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Trash2, Plus, X, Save, CalendarClock, Send } from "lucide-react";
+import {
+  Trash2,
+  Plus,
+  X,
+  Save,
+  CalendarClock,
+  Send,
+  Headphones,
+} from "lucide-react";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Modal } from "@/components/admin/Modal";
 import {
@@ -26,6 +34,7 @@ type InitialDevotional = Pick<
   | "body_md"
   | "scripture_refs"
   | "reading_time_minutes"
+  | "audio_url"
   | "publish_date"
   | "status"
 >;
@@ -56,6 +65,7 @@ export function DevotionalEditor({
   const [readingTouched, setReadingTouched] = useState(
     initial?.reading_time_minutes != null
   );
+  const [audioUrl, setAudioUrl] = useState(initial?.audio_url ?? "");
   const [publishDate, setPublishDate] = useState(initial?.publish_date ?? "");
 
   const [seriesList, setSeriesList] = useState<SeriesOption[]>(series);
@@ -113,6 +123,7 @@ export function DevotionalEditor({
       bodyMd,
       scriptureRefs,
       readingTimeMinutes: readingTime ? Number(readingTime) : null,
+      audioUrl: audioUrl || null,
       publishDate: publishDate || null,
       status,
     }),
@@ -124,6 +135,7 @@ export function DevotionalEditor({
       bodyMd,
       scriptureRefs,
       readingTime,
+      audioUrl,
       publishDate,
     ]
   );
@@ -388,6 +400,23 @@ export function DevotionalEditor({
               className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
             />
           </div>
+        </div>
+
+        <div>
+          <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
+            <Headphones size={15} className="text-copper" /> Audio narration URL{" "}
+            <span className="font-normal text-ink/40">(optional)</span>
+          </label>
+          <input
+            type="url"
+            value={audioUrl}
+            onChange={(e) => {
+              setAudioUrl(e.target.value);
+              markDirty();
+            }}
+            placeholder="https://...mp3 (hosted audio link)"
+            className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+          />
         </div>
 
         <div className="flex flex-wrap items-center gap-3 border-t border-border pt-5">
