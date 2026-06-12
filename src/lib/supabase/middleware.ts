@@ -45,7 +45,19 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const host = request.headers.get("host") ?? "";
+  const isAdminHost = host.startsWith("admin.");
   const path = request.nextUrl.pathname;
+
+  // The admin subdomain is the staff app: send its root straight to the
+  // dashboard (or sign-in), not the public marketing landing. The apex
+  // (mathetes.live) keeps serving the marketing page at "/".
+  if (isAdminHost && path === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = user ? "/dashboard" : "/signin";
+    return NextResponse.redirect(url);
+  }
+
   const isProtected = ADMIN_PREFIXES.some((p) => path.startsWith(p));
 
   if (isProtected && !user) {
