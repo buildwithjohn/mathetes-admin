@@ -23,6 +23,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mathetes.live"),
   title: "Mathetes",
   description: "Follow daily. A campus discipleship companion for CCCFSP FUOYE.",
 };
