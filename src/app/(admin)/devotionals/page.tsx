@@ -3,7 +3,7 @@ import { format, parseISO } from "date-fns";
 import { Plus, BookOpen } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import type { ContentStatus } from "@/lib/database.types";
+import type { ContentStatus } from "@/lib/db";
 
 const STATUS_FILTERS: { value: ContentStatus | "all"; label: string }[] = [
   { value: "all", label: "All" },

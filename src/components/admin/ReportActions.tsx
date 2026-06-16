@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Eye, CheckCircle2, XCircle } from "lucide-react";
 import { setReportStatus } from "@/app/(admin)/moderation/actions";
-import type { ReportStatus } from "@/lib/database.types";
+import type { ReportStatus } from "@/lib/db";
 
 export function ReportActions({
   id,
   status,
 }: {
   id: string;
-  status: ReportStatus;
+  status: string;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);

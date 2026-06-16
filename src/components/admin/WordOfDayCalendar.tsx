@@ -20,7 +20,7 @@ import { Sparkles, Trash2 } from "lucide-react";
 import { Modal } from "@/components/admin/Modal";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { saveWordOfDay, deleteWordOfDay } from "@/app/(admin)/word-of-day/actions";
-import type { ContentStatus, Tables } from "@/lib/database.types";
+import type { ContentStatus, Tables } from "@/lib/db";
 import { cn } from "@/utils/cn";
 
 type Wotd = Pick<

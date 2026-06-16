@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Globe, Lock, Send } from "lucide-react";
 import { answerQuestion } from "@/app/(admin)/ask-pastor/actions";
-import type { AskPrivacy } from "@/lib/database.types";
 import { cn } from "@/utils/cn";
 
 export function AskResponder({
@@ -15,7 +14,7 @@ export function AskResponder({
   alreadyPublic,
 }: {
   id: string;
-  requestedPrivacy: AskPrivacy;
+  requestedPrivacy: string;
   initialResponse: string | null;
   alreadyPublic: boolean;
 }) {

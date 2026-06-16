@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
-import type { Json, TablesInsert } from "@/lib/database.types";
+import type { Json, TablesInsert } from "@/lib/db";
 
 const eventSchema = z
   .object({

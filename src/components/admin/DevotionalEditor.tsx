@@ -22,7 +22,7 @@ import {
   createSeries,
 } from "@/app/(admin)/devotionals/actions";
 import { readingTimeMinutes } from "@/lib/content";
-import type { ContentStatus, Tables } from "@/lib/database.types";
+import type { ContentStatus, Tables } from "@/lib/db";
 
 type SeriesOption = Pick<Tables<"devotional_series">, "id" | "title">;
 type InitialDevotional = Pick<
@@ -140,7 +140,8 @@ export function DevotionalEditor({
     ]
   );
 
-  const currentStatus: ContentStatus = initial?.status ?? "draft";
+  const currentStatus: ContentStatus =
+    (initial?.status as ContentStatus) ?? "draft";
 
   async function persist(
     status: ContentStatus,

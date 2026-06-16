@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
 import { ReportActions } from "@/components/admin/ReportActions";
-import type { ReportStatus } from "@/lib/database.types";
+import type { ReportStatus } from "@/lib/db";
 
 const FILTERS = [
   { value: "open", label: "Open" },

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
-import type { TablesInsert } from "@/lib/database.types";
+import type { TablesInsert } from "@/lib/db";
 
 const wotdSchema = z.object({
   id: z.string().uuid().optional(),

@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/database.types";
+import type { Database } from "@/lib/db";
 
 /**
  * Service-role Supabase client for server-only tasks that bypass RLS

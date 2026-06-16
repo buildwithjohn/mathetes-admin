@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Modal } from "@/components/admin/Modal";
 import { updateMember } from "@/app/(admin)/members/actions";
-import type { UserRole, Tables } from "@/lib/database.types";
+import type { UserRole, Tables } from "@/lib/db";
 import { cn } from "@/utils/cn";
 
 type Member = Pick<
@@ -82,7 +82,7 @@ export function MembersManager({
 
   function openEdit(m: Member) {
     setEditing(m);
-    setRole(m.role);
+    setRole(m.role as UserRole);
     setHouseId(m.house_id ?? "");
     setCampusId(m.campus_id ?? "");
   }
@@ -140,7 +140,7 @@ export function MembersManager({
 
       {/* Grouped directory */}
       {groups.map((g) => {
-        const rows = members.filter((m) => g.roles.includes(m.role));
+        const rows = members.filter((m) => g.roles.includes(m.role as UserRole));
         if (rows.length === 0) return null;
         const Icon = g.icon;
         return (
@@ -170,7 +170,7 @@ export function MembersManager({
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-ink">{m.name}</p>
                       <p className="truncate text-xs text-ink/50">
-                        {ROLE_LABEL[m.role]}
+                        {ROLE_LABEL[m.role as UserRole]}
                         {house ? ` · ${house.name}` : ""}
                         {campus ? ` · ${campus.name}` : ""}
                         {m.dept ? ` · ${m.dept}` : ""}

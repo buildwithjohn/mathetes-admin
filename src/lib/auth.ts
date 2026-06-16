@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { Tables } from "@/lib/database.types";
+import type { Tables } from "@/lib/db";
 
 export type AdminProfile = Pick<
   Tables<"user_profiles">,

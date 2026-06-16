@@ -25,7 +25,7 @@ import type {
   AnnouncementBanner,
   ContentStatus,
   Tables,
-} from "@/lib/database.types";
+} from "@/lib/db";
 
 type Initial = Pick<
   Tables<"announcements">,
@@ -66,7 +66,7 @@ export function AnnouncementEditor({ initial }: { initial: Initial }) {
   const [title, setTitle] = useState(initial?.title ?? "");
   const [bodyMd, setBodyMd] = useState(initial?.body_md ?? "");
   const [banner, setBanner] = useState<AnnouncementBanner | "">(
-    initial?.banner ?? ""
+    (initial?.banner as AnnouncementBanner | null) ?? ""
   );
   const initialEvent = readEvent(initial?.event_data ?? null);
   const [hasEvent, setHasEvent] = useState(

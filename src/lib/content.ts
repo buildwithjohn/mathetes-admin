@@ -1,4 +1,4 @@
-import type { ContentStatus } from "@/lib/database.types";
+import type { ContentStatus } from "@/lib/db";
 
 // Average adult reading speed; used to auto-suggest reading time.
 const WORDS_PER_MINUTE = 200;
