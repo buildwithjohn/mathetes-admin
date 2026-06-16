@@ -134,3 +134,44 @@ body {
   padding: 0.2em 0 0.2em 1em;
   font-style: italic;
 }
+
+/* ------------------------------------------------------------------ */
+/* Legal / long-form public pages (privacy, terms)                     */
+/* ------------------------------------------------------------------ */
+.legal-prose {
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.legal-prose h2 {
+  font-family: var(--font-fraunces), Fraunces, serif;
+  font-size: 1.4rem;
+  margin: 1.8em 0 0.5em;
+  color: var(--ink);
+}
+.legal-prose h3 {
+  font-family: var(--font-fraunces), Fraunces, serif;
+  font-size: 1.1rem;
+  margin: 1.2em 0 0.4em;
+}
+.legal-prose p {
+  margin: 0 0 0.9em;
+  color: rgba(26, 26, 26, 0.8);
+}
+.legal-prose ul {
+  margin: 0 0 0.9em;
+  padding-left: 1.3em;
+  list-style: disc;
+}
+.legal-prose li {
+  margin: 0.25em 0;
+  color: rgba(26, 26, 26, 0.8);
+}
+.legal-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.legal-prose a {
+  color: var(--copper);
+  text-decoration: underline;
+}

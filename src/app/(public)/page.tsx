@@ -30,8 +30,19 @@ export default function LandingPage() {
           </Link>
         </div>
       </div>
-      <footer className="absolute bottom-8 text-sm italic text-ink/50">
-        In all thy ways acknowledge him.
+      <footer className="absolute bottom-8 flex flex-col items-center gap-2 text-center">
+        <p className="text-sm italic text-ink/50">
+          In all thy ways acknowledge him.
+        </p>
+        <nav className="flex items-center gap-3 text-xs text-ink/50">
+          <Link href="/privacy" className="hover:text-copper">
+            Privacy
+          </Link>
+          <span aria-hidden>·</span>
+          <Link href="/terms" className="hover:text-copper">
+            Terms
+          </Link>
+        </nav>
       </footer>
     </main>
   );

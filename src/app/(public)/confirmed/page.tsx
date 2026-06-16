@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Check } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -55,8 +56,17 @@ export default function ConfirmedPage() {
         </div>
       </div>
 
-      <footer className="mt-8 max-w-md text-center text-xs text-ink/40">
-        Celestial Church of Christ Federal Students Parish, FUOYE.
+      <footer className="mt-8 flex max-w-md flex-col items-center gap-2 text-center text-xs text-ink/40">
+        <nav className="flex items-center gap-3">
+          <Link href="/privacy" className="hover:text-copper">
+            Privacy
+          </Link>
+          <span aria-hidden>·</span>
+          <Link href="/terms" className="hover:text-copper">
+            Terms
+          </Link>
+        </nav>
+        <p>Celestial Church of Christ Federal Students Parish, FUOYE.</p>
       </footer>
     </main>
   );
