@@ -126,10 +126,60 @@ Use it to notice trends, not to chase numbers. A quiet week is not a failure.
 
 ## Authoring a reading plan
 
-<!-- Filled in at STEP 16 once the reading-plan tools ship. -->
+Reading plans are part of V2.0. This section describes how the authoring tools
+work so you are ready when they go live.
 
-This section will be completed when the reading-plan authoring tools are
-released. (Reading plans are part of V2.0.)
+### When to use a plan (instead of a daily devotional)
+
+A **Word of the Day** and a **devotional** are for the single day they belong
+to. A **reading plan** is for a journey: a set of days a disciple works through
+in order, at their own pace — for example, "7 days on prayer," "21 days through
+the life of Christ," or a 30-day new-believer track. Reach for a plan when you
+want to teach something longer-form and sequential.
+
+### How to create a plan
+
+1. Tap **Reading Plans** in the left menu, then **New Plan**.
+2. Give it a **title** (the web address fills in automatically), a short
+   **description**, and a **length in days**.
+3. Pick a **difficulty**: Starter, Intermediate, or Deep.
+4. Add a **cover image**.
+5. Leave **Sequence locked** on if disciples should do the days in order
+   (recommended); turn it off to let them jump around.
+6. Save. You now have an empty plan in **Draft**.
+
+### How to structure the days
+
+A plan is a list of numbered days. Open the **Days** tab and add a day for each
+step. Each day follows the same gentle pattern:
+
+- **Scripture** — a reference (e.g., "John 3:16"). Tap **Fetch from KJV** and the
+  verse text fills in for you.
+- **Reflection** — your teaching for the day, written in the same editor you use
+  for devotionals.
+- **Prompt** — one question that invites the disciple to respond in their heart
+  or in writing.
+
+You can also attach an **audio** reading, and reorder days by dragging them.
+
+### Linking to existing devotionals
+
+When a day's theme matches a devotional you have already written, use the
+**Linked devotional** dropdown to connect them, so a disciple can go deeper
+without you rewriting the same teaching twice.
+
+### How to publish
+
+When the plan is ready, tap **Publish**. It becomes visible to the parish in the
+app. If you need to make changes after publishing, you can **Unpublish** to take
+it back to draft, edit, and publish again.
+
+### A pastoral note on reflections
+
+**Reflections are private.** When a disciple writes their response to a day, you
+will not see what they wrote. No one does — unless that disciple explicitly
+chooses to share it with their discipler. Reading plans are a space for honest
+reflection before God, and we guard that.
 
 ---
 
