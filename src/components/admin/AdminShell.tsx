@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { SidebarNav } from "@/components/admin/SidebarNav";
 import { SignOutButton } from "@/components/admin/SignOutButton";
+import { AccountMenu } from "@/components/admin/AccountMenu";
 import type { Capability } from "@/lib/roles";
 import { cn } from "@/utils/cn";
 
@@ -94,17 +95,7 @@ export function AdminShell({
           <span className="hidden text-sm font-medium text-ink sm:inline">
             CCCFSP FUOYE
           </span>
-          <div className="ml-auto flex min-w-0 items-center gap-2">
-            <span className="max-w-[40vw] truncate text-sm text-ink/60 sm:max-w-none">
-              {name}
-            </span>
-            <span className="shrink-0 rounded-full bg-copper/10 px-2 py-0.5 text-[11px] font-semibold text-copper">
-              {roleLabel}
-            </span>
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-copper text-xs font-semibold text-white">
-              {name.slice(0, 1).toUpperCase()}
-            </span>
-          </div>
+          <AccountMenu name={name} roleLabel={roleLabel} />
         </header>
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {children}
