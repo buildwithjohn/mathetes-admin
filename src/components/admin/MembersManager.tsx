@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { formatDistanceToNow, parseISO } from "date-fns";
 import { toast } from "sonner";
 import {
   Users,
@@ -49,6 +50,10 @@ type Member = Pick<
 >;
 type House = Pick<Tables<"houses">, "id" | "name" | "color">;
 type Campus = Pick<Tables<"campuses">, "id" | "name">;
+type Deletion = Pick<
+  Tables<"member_deletions">,
+  "id" | "actor_name" | "target_name" | "target_email" | "target_role" | "created_at"
+>;
 
 function initials(name: string) {
   return name
@@ -65,12 +70,14 @@ export function MembersManager({
   campuses,
   actorRole,
   actorId,
+  deletions,
 }: {
   members: Member[];
   houses: House[];
   campuses: Campus[];
   actorRole: EffectiveRole;
   actorId: string;
+  deletions: Deletion[];
 }) {
   const router = useRouter();
   const houseById = useMemo(
@@ -356,6 +363,44 @@ export function MembersManager({
             mobile app.
           </p>
         </div>
+      )}
+
+      {/* Audit: recent removals */}
+      {deletions.length > 0 && (
+        <section>
+          <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink/50">
+            <Trash2 size={15} className="text-oxblood" /> Recent removals
+            <span className="text-ink/30">({deletions.length})</span>
+          </h2>
+          <div className="overflow-hidden rounded-2xl border border-border bg-surface-1">
+            {deletions.map((d, i) => (
+              <div
+                key={d.id}
+                className={cn(
+                  "flex flex-wrap items-center gap-x-2 gap-y-0.5 px-5 py-3 text-sm",
+                  i > 0 && "border-t border-border"
+                )}
+              >
+                <span className="font-medium text-ink">{d.target_name}</span>
+                {d.target_role && (
+                  <span className="text-ink/50">
+                    ({ROLE_LABEL[d.target_role as EffectiveRole] ?? d.target_role})
+                  </span>
+                )}
+                {d.target_email && (
+                  <span className="text-ink/40">{d.target_email}</span>
+                )}
+                <span className="ml-auto text-ink/50">
+                  removed by{" "}
+                  <span className="text-ink/70">{d.actor_name}</span> ·{" "}
+                  {formatDistanceToNow(parseISO(d.created_at), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {/* Edit modal */}

@@ -1338,6 +1338,39 @@ export interface Database {
         };
         Relationships: [];
       };
+      member_deletions: {
+        Row: {
+          id: string;
+          parish_id: string;
+          actor_profile_id: string | null;
+          actor_name: string;
+          target_name: string;
+          target_email: string | null;
+          target_role: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          parish_id: string;
+          actor_profile_id?: string | null;
+          actor_name: string;
+          target_name: string;
+          target_email?: string | null;
+          target_role?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          parish_id?: string;
+          actor_profile_id?: string | null;
+          actor_name?: string;
+          target_name?: string;
+          target_email?: string | null;
+          target_role?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       user_profiles: {
         Row: {
           id: string;

@@ -140,6 +140,10 @@ export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
   }
 
   const parish = profile.parish_id!;
+  // Snapshot the email for the audit log before the account is gone.
+  const { data: authUser } = await admin.auth.admin.getUserById(target.auth_id);
+  const targetEmail = authUser?.user?.email ?? null;
+
   // Clear the restrict-default author/creator references so the cascade can
   // proceed. Content itself stays; it just loses the (now deleted) author.
   await Promise.all([
@@ -168,6 +172,17 @@ export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
   // Deleting the auth user cascades the profile and all on-delete-cascade data.
   const { error } = await admin.auth.admin.deleteUser(target.auth_id);
   if (error) return { ok: false, error: error.message };
+
+  // Durable audit row (snapshots, so it survives the deletion). Best effort:
+  // the member is already gone, so a logging hiccup must not surface as failure.
+  await admin.from("member_deletions").insert({
+    parish_id: parish,
+    actor_profile_id: profile.id,
+    actor_name: profile.name ?? "Unknown",
+    target_name: target.name,
+    target_email: targetEmail,
+    target_role: target.role,
+  });
 
   revalidatePath("/members");
   return { ok: true };

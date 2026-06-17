@@ -5,7 +5,7 @@ import { MembersManager } from "@/components/admin/MembersManager";
 export default async function MembersPage() {
   const { supabase, profile } = await requireCapability("members");
 
-  const [membersRes, housesRes, campusesRes] = await Promise.all([
+  const [membersRes, housesRes, campusesRes, deletionsRes] = await Promise.all([
     supabase
       .from("user_profiles")
       .select(
@@ -23,6 +23,12 @@ export default async function MembersPage() {
       .select("id, name")
       .eq("parish_id", profile.parish_id!)
       .order("name"),
+    supabase
+      .from("member_deletions")
+      .select("id, actor_name, target_name, target_email, target_role, created_at")
+      .eq("parish_id", profile.parish_id!)
+      .order("created_at", { ascending: false })
+      .limit(20),
   ]);
 
   return (
@@ -38,6 +44,7 @@ export default async function MembersPage() {
           campuses={campusesRes.data ?? []}
           actorRole={effectiveRole(profile)}
           actorId={profile.id}
+          deletions={deletionsRes.data ?? []}
         />
       </div>
     </div>
