@@ -79,7 +79,7 @@ export default async function ModerationPage({
     <div>
       <div className="flex items-center gap-2">
         <ShieldAlert className="text-copper" size={26} />
-        <h1 className="font-display text-4xl">Moderation</h1>
+        <h1 className="font-display text-3xl sm:text-4xl">Moderation</h1>
       </div>
       <p className="mt-1 text-ink/60">
         Review member reports and automated moderation flags.

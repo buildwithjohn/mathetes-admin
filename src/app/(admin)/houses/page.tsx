@@ -44,7 +44,7 @@ export default async function HousesPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Houses</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Houses</h1>
       <p className="mt-1 text-ink/60">
         Manage house fellowships per campus. Creating a house also creates its
         group chat.

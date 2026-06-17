@@ -91,7 +91,7 @@ export default async function GivingPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Giving</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Giving</h1>
       <p className="mt-1 text-ink/60">
         Manage giving funds and review settled gifts. Totals reflect successful
         donations only; amounts are private and never shown per donor.

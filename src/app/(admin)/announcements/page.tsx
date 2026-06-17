@@ -18,7 +18,7 @@ export default async function AnnouncementsPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-4xl">Announcements</h1>
+          <h1 className="font-display text-3xl sm:text-4xl">Announcements</h1>
           <p className="mt-1 text-ink/60">
             Post parish-wide announcements with events and photos.
           </p>

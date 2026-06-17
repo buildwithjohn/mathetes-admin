@@ -56,7 +56,7 @@ export default async function ReadingPlansPage({
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-4xl">Reading Plans</h1>
+          <h1 className="font-display text-3xl sm:text-4xl">Reading Plans</h1>
           <p className="mt-1 text-ink/60">
             Author guided, multi-day scripture and reflection journeys.
           </p>

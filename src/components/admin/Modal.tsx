@@ -40,7 +40,12 @@ export function Modal({
   if (!open || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex">
+    <div
+      className={cn(
+        "fixed inset-0 z-50 flex",
+        side === "center" && "p-4"
+      )}
+    >
       <div
         className="absolute inset-0 bg-ink/30"
         onClick={onClose}
@@ -54,7 +59,7 @@ export function Modal({
           "relative z-10 flex w-full flex-col bg-white shadow-xl",
           side === "right"
             ? "ml-auto h-full max-w-lg"
-            : cn("m-auto rounded-2xl", widthClass)
+            : cn("m-auto max-h-[calc(100vh-2rem)] rounded-2xl", widthClass)
         )}
       >
         <header className="flex items-center justify-between border-b border-border px-6 py-4">

@@ -85,7 +85,7 @@ export default async function AnalyticsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Analytics</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Analytics</h1>
       <p className="mt-1 text-ink/60">
         Engagement and content at a glance for the parish.
       </p>

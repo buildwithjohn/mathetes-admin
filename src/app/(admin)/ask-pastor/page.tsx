@@ -54,7 +54,7 @@ export default async function AskPastorPage({
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Ask Pastor</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Ask Pastor</h1>
       <p className="mt-1 text-ink/60">
         Respond to questions within the 48-hour window.
       </p>

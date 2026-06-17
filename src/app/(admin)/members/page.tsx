@@ -33,7 +33,7 @@ export default async function MembersPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl">Members</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Members</h1>
       <p className="mt-1 text-ink/60">
         Onboard staff, set roles, and manage house and campus assignments.
       </p>
