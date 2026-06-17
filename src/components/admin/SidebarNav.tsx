@@ -13,6 +13,7 @@ import {
   MessageCircleQuestion,
   ShieldAlert,
   BarChart3,
+  HandCoins,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/utils/cn";
@@ -25,6 +26,7 @@ const NAV: { href: string; label: string; icon: LucideIcon }[] = [
   { href: "/announcements", label: "Announcements", icon: Megaphone },
   { href: "/houses", label: "Houses", icon: Home },
   { href: "/members", label: "Members", icon: Users },
+  { href: "/giving", label: "Giving", icon: HandCoins },
   { href: "/ask-pastor", label: "Ask Pastor", icon: MessageCircleQuestion },
   { href: "/moderation", label: "Moderation", icon: ShieldAlert },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },

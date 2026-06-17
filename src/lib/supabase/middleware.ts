@@ -13,6 +13,7 @@ const ADMIN_PREFIXES = [
   "/announcements",
   "/houses",
   "/members",
+  "/giving",
   "/ask-pastor",
   "/moderation",
   "/analytics",
