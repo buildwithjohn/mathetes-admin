@@ -305,6 +305,7 @@ export interface Database {
           house_id: string | null;
           created_by: string | null;
           created_at: string;
+          archived_at: string | null;
         };
         Insert: {
           id?: string;
@@ -313,6 +314,7 @@ export interface Database {
           house_id?: string | null;
           created_by?: string | null;
           created_at?: string;
+          archived_at?: string | null;
         };
         Update: {
           id?: string;
@@ -321,6 +323,7 @@ export interface Database {
           house_id?: string | null;
           created_by?: string | null;
           created_at?: string;
+          archived_at?: string | null;
         };
         Relationships: [];
       };
@@ -498,6 +501,7 @@ export interface Database {
           leader_id: string | null;
           created_at: string;
           campus_id: string | null;
+          archived_at: string | null;
         };
         Insert: {
           id?: string;
@@ -510,6 +514,7 @@ export interface Database {
           leader_id?: string | null;
           created_at?: string;
           campus_id?: string | null;
+          archived_at?: string | null;
         };
         Update: {
           id?: string;
@@ -522,6 +527,7 @@ export interface Database {
           leader_id?: string | null;
           created_at?: string;
           campus_id?: string | null;
+          archived_at?: string | null;
         };
         Relationships: [];
       };

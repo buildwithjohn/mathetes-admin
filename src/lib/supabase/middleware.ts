@@ -11,6 +11,7 @@ const ADMIN_PREFIXES = [
   "/word-of-day",
   "/reading-plans",
   "/announcements",
+  "/houses",
   "/members",
   "/ask-pastor",
   "/moderation",
