@@ -7,7 +7,7 @@ export default async function MembersPage() {
   const [membersRes, housesRes, campusesRes] = await Promise.all([
     supabase
       .from("user_profiles")
-      .select("id, name, role, house_id, campus_id, year, dept, photo_url")
+      .select("id, name, role, house_id, campus_id, year, dept, phone, date_of_birth, photo_url")
       .eq("parish_id", profile.parish_id!)
       .order("name"),
     supabase

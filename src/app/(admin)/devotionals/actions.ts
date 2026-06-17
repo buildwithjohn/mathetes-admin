@@ -21,6 +21,13 @@ const devotionalSchema = z
       .nullable()
       .optional()
       .or(z.literal("")),
+    videoUrl: z
+      .string()
+      .trim()
+      .url("Video must be a URL")
+      .nullable()
+      .optional()
+      .or(z.literal("")),
     publishDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
     status: z.enum(["draft", "scheduled", "published"]),
   })
@@ -54,6 +61,7 @@ export async function saveDevotional(
     scripture_refs: v.scriptureRefs,
     reading_time_minutes: v.readingTimeMinutes ?? null,
     audio_url: v.audioUrl ? v.audioUrl : null,
+    video_url: v.videoUrl ? v.videoUrl : null,
     publish_date: v.publishDate ?? null,
     status: v.status,
   };

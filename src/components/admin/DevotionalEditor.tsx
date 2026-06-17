@@ -13,6 +13,7 @@ import {
   CalendarClock,
   Send,
   Headphones,
+  Video,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Modal } from "@/components/admin/Modal";
@@ -35,6 +36,7 @@ type InitialDevotional = Pick<
   | "scripture_refs"
   | "reading_time_minutes"
   | "audio_url"
+  | "video_url"
   | "publish_date"
   | "status"
 >;
@@ -66,6 +68,7 @@ export function DevotionalEditor({
     initial?.reading_time_minutes != null
   );
   const [audioUrl, setAudioUrl] = useState(initial?.audio_url ?? "");
+  const [videoUrl, setVideoUrl] = useState(initial?.video_url ?? "");
   const [publishDate, setPublishDate] = useState(initial?.publish_date ?? "");
 
   const [seriesList, setSeriesList] = useState<SeriesOption[]>(series);
@@ -124,6 +127,7 @@ export function DevotionalEditor({
       scriptureRefs,
       readingTimeMinutes: readingTime ? Number(readingTime) : null,
       audioUrl: audioUrl || null,
+      videoUrl: videoUrl || null,
       publishDate: publishDate || null,
       status,
     }),
@@ -135,6 +139,7 @@ export function DevotionalEditor({
       bodyMd,
       scriptureRefs,
       readingTime,
+      videoUrl,
       audioUrl,
       publishDate,
     ]
@@ -403,21 +408,39 @@ export function DevotionalEditor({
           </div>
         </div>
 
-        <div>
-          <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
-            <Headphones size={15} className="text-copper" /> Audio narration URL{" "}
-            <span className="font-normal text-ink/40">(optional)</span>
-          </label>
-          <input
-            type="url"
-            value={audioUrl}
-            onChange={(e) => {
-              setAudioUrl(e.target.value);
-              markDirty();
-            }}
-            placeholder="https://...mp3 (hosted audio link)"
-            className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
-          />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
+              <Headphones size={15} className="text-copper" /> Audio URL{" "}
+              <span className="font-normal text-ink/40">(optional)</span>
+            </label>
+            <input
+              type="url"
+              value={audioUrl}
+              onChange={(e) => {
+                setAudioUrl(e.target.value);
+                markDirty();
+              }}
+              placeholder="https://...mp3"
+              className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+            />
+          </div>
+          <div>
+            <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
+              <Video size={15} className="text-copper" /> Video URL{" "}
+              <span className="font-normal text-ink/40">(optional)</span>
+            </label>
+            <input
+              type="url"
+              value={videoUrl}
+              onChange={(e) => {
+                setVideoUrl(e.target.value);
+                markDirty();
+              }}
+              placeholder="https://...mp4"
+              className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+            />
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 border-t border-border pt-5">

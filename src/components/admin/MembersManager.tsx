@@ -25,6 +25,8 @@ type Member = Pick<
   | "campus_id"
   | "year"
   | "dept"
+  | "phone"
+  | "date_of_birth"
   | "photo_url"
 >;
 type House = Pick<Tables<"houses">, "id" | "name" | "color">;
@@ -73,6 +75,14 @@ export function MembersManager({
     () => new Map(campuses.map((c) => [c.id, c])),
     [campuses]
   );
+
+  const [campusFilter, setCampusFilter] = useState<string>("all");
+  const visibleMembers = useMemo(() => {
+    if (campusFilter === "all") return members;
+    if (campusFilter === "none")
+      return members.filter((m) => !m.campus_id);
+    return members.filter((m) => m.campus_id === campusFilter);
+  }, [members, campusFilter]);
 
   const [editing, setEditing] = useState<Member | null>(null);
   const [role, setRole] = useState<UserRole>("member");
@@ -138,9 +148,37 @@ export function MembersManager({
         )}
       </div>
 
+      {/* Campus filter */}
+      {campuses.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm text-ink/50">Campus</span>
+          {[
+            { id: "all", name: "All" },
+            ...campuses,
+            ...(unassignedCampus > 0 ? [{ id: "none", name: "No campus" }] : []),
+          ].map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => setCampusFilter(c.id)}
+              className={cn(
+                "rounded-full border px-3 py-1 text-sm transition",
+                campusFilter === c.id
+                  ? "border-copper bg-copper/10 text-copper"
+                  : "border-border text-ink/70 hover:bg-parchment"
+              )}
+            >
+              {c.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Grouped directory */}
       {groups.map((g) => {
-        const rows = members.filter((m) => g.roles.includes(m.role as UserRole));
+        const rows = visibleMembers.filter((m) =>
+          g.roles.includes(m.role as UserRole)
+        );
         if (rows.length === 0) return null;
         const Icon = g.icon;
         return (
@@ -175,6 +213,7 @@ export function MembersManager({
                         {campus ? ` · ${campus.name}` : ""}
                         {m.dept ? ` · ${m.dept}` : ""}
                         {m.year ? ` · ${m.year}` : ""}
+                        {m.phone ? ` · ${m.phone}` : ""}
                       </p>
                     </div>
                     <button
