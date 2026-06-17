@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/lib/db";
@@ -7,21 +8,25 @@ export type AdminProfile = Pick<
   "id" | "name" | "role" | "parish_id"
 >;
 
-/**
- * Resolve the signed-in admin's profile for use in Server Components and
- * Server Actions. Redirects to /signin when unauthenticated and to the
- * not-authorized shell when the user is not a pastor/admin.
- *
- * Returns the Supabase server client alongside the profile so callers can
- * issue further queries on the same request.
- */
-export async function requireAdmin() {
-  const supabase = await createClient();
+export type AdminContext = {
+  user: { id: string; email?: string } | null;
+  profile: AdminProfile | null;
+};
 
+/**
+ * Load the signed-in user + their admin profile ONCE per request.
+ *
+ * Wrapped in React `cache()` so the admin layout and every page/Server Action
+ * that needs the profile share a single `getUser()` + profile query within a
+ * request, instead of each issuing their own network round-trips. This is the
+ * main lever against per-navigation latency.
+ */
+export const getAdminContext = cache(async (): Promise<AdminContext> => {
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/signin");
+  if (!user) return { user: null, profile: null };
 
   const { data } = await supabase
     .from("user_profiles")
@@ -29,12 +34,26 @@ export async function requireAdmin() {
     .eq("auth_id", user.id)
     .single();
 
-  const profile = data as AdminProfile | null;
+  return {
+    user: { id: user.id, email: user.email },
+    profile: (data as AdminProfile | null) ?? null,
+  };
+});
+
+/**
+ * For Server Components / Actions: resolve the admin's profile, redirecting to
+ * /signin when unauthenticated and to /dashboard when not a pastor/admin.
+ * Returns a Supabase server client for follow-up queries.
+ */
+export async function requireAdmin() {
+  const { user, profile } = await getAdminContext();
+  if (!user) redirect("/signin");
   if (!profile || (profile.role !== "pastor" && profile.role !== "admin")) {
     // The (admin) layout renders the friendly not-authorized screen; bouncing
-    // to the dashboard keeps Server Actions from acting without a valid role.
+    // here keeps Server Actions from acting without a valid role.
     redirect("/dashboard");
   }
-
+  // createClient() is itself cheap and request-scoped; reuse it for queries.
+  const supabase = await createClient();
   return { supabase, profile };
 }

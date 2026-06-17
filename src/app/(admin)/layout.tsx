@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { getAdminContext } from "@/lib/auth";
 import { SidebarNav } from "@/components/admin/SidebarNav";
 import { SignOutButton } from "@/components/admin/SignOutButton";
 
@@ -8,23 +8,14 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Shared (cached) per-request lookup; pages reuse this same result.
+  const { user, profile } = await getAdminContext();
 
   // Middleware already redirects unauthenticated users; defense in depth.
   if (!user) redirect("/signin");
 
   // Role gate: only pastor/admin may enter.
-  const { data: profile } = await supabase
-    .from("user_profiles")
-    .select("name, role")
-    .eq("auth_id", user.id)
-    .single();
-
-  const role = (profile as { role?: string } | null)?.role;
-  if (role !== "pastor" && role !== "admin") {
+  if (profile?.role !== "pastor" && profile?.role !== "admin") {
     return (
       <main className="flex min-h-screen items-center justify-center bg-parchment px-6 text-center">
         <div>
@@ -37,7 +28,7 @@ export default async function AdminLayout({
     );
   }
 
-  const name = (profile as { name?: string } | null)?.name ?? user.email;
+  const name = profile?.name ?? user.email;
 
   return (
     <div className="flex min-h-screen bg-parchment text-ink">
