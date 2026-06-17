@@ -54,6 +54,8 @@ const CAPABILITIES: Record<EffectiveRole, Capability[]> = {
     "analytics",
     "ask_pastor",
   ],
+  // Administrative lane. NOT pastoral: a plain admin runs the platform but does
+  // not answer Ask Pastor. Only the owner spans both lanes.
   admin: [
     "content",
     "houses",
@@ -62,9 +64,8 @@ const CAPABILITIES: Record<EffectiveRole, Capability[]> = {
     "giving",
     "moderation",
     "analytics",
-    "ask_pastor",
   ],
-  // Mentors get the pastoral surface only.
+  // Pastoral lane only. A pastor is a mentor, distinct from an admin.
   pastor: ["ask_pastor"],
   house_leader: [],
   discipler: [],

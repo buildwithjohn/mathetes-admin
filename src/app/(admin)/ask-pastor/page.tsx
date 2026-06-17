@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { MessageCircleQuestion, AlertTriangle, Lock, Globe } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 
 const FILTERS = [
   { value: "awaiting", label: "Awaiting" },
@@ -23,7 +23,7 @@ export default async function AskPastorPage({
     ? (filter as Filter)
     : "awaiting";
 
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("ask_pastor");
 
   let query = supabase
     .from("ask_questions")

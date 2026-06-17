@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 
 const answerSchema = z.object({
   id: z.string().uuid(),
@@ -21,7 +21,7 @@ export async function answerQuestion(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const v = parsed.data;
-  const { supabase } = await requireAdmin();
+  const { supabase } = await requireCapability("ask_pastor");
 
   // Use the backend RPC: it sets privacy (which the public_qa feed keys off),
   // status, answered_by/at atomically and enforces the parish-admin guard.

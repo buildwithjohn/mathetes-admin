@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import { ArrowLeft, AlertTriangle, Lock, Globe } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 import { AskResponder } from "@/components/admin/AskResponder";
 
 export default async function AskPastorDetailPage({
@@ -11,7 +11,7 @@ export default async function AskPastorDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("ask_pastor");
 
   const { data: question } = await supabase
     .from("ask_questions")
