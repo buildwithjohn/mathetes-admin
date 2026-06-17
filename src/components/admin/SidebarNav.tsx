@@ -33,7 +33,7 @@ const NAV: { href: string; label: string; icon: LucideIcon }[] = [
 export function SidebarNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex-1 space-y-0.5 px-3">
+    <nav className="flex-1 space-y-0.5 overflow-y-auto px-3">
       {NAV.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (

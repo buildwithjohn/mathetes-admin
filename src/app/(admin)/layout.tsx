@@ -31,8 +31,8 @@ export default async function AdminLayout({
   const name = profile?.name ?? user.email;
 
   return (
-    <div className="flex min-h-screen bg-parchment text-ink">
-      <aside className="flex w-60 shrink-0 flex-col border-r border-border bg-surface-1">
+    <div className="flex h-screen overflow-hidden bg-parchment text-ink">
+      <aside className="flex h-screen w-60 shrink-0 flex-col border-r border-border bg-surface-1">
         <div className="px-6 py-5">
           <span className="font-display text-2xl tracking-tight">Mathetes</span>
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-copper">
@@ -45,8 +45,8 @@ export default async function AdminLayout({
         </div>
       </aside>
 
-      <div className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border bg-surface-1 px-8 py-3">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between border-b border-border bg-surface-1 px-8 py-3">
           <span className="text-sm font-medium text-ink">CCCFSP FUOYE</span>
           <div className="flex items-center gap-2">
             <span className="text-sm text-ink/60">{name}</span>
@@ -55,7 +55,7 @@ export default async function AdminLayout({
             </span>
           </div>
         </header>
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     </div>
   );
