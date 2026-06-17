@@ -54,7 +54,7 @@ export default async function ReadingPlansPage({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl">Reading Plans</h1>
           <p className="mt-1 text-ink/60">
@@ -63,7 +63,7 @@ export default async function ReadingPlansPage({
         </div>
         <Link
           href="/reading-plans/new"
-          className="inline-flex items-center gap-2 rounded-lg bg-copper px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-lg bg-copper px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
         >
           <Plus size={16} /> New Plan
         </Link>

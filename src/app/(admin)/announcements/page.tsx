@@ -16,7 +16,7 @@ export default async function AnnouncementsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl">Announcements</h1>
           <p className="mt-1 text-ink/60">
@@ -25,14 +25,44 @@ export default async function AnnouncementsPage() {
         </div>
         <Link
           href="/announcements/new"
-          className="inline-flex items-center gap-2 rounded-lg bg-copper px-4 py-2 text-sm font-medium text-parchment transition hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-lg bg-copper px-4 py-2 text-sm font-medium text-parchment transition hover:opacity-90"
         >
           <Plus size={16} /> New announcement
         </Link>
       </div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-white">
-        <table className="w-full text-left text-sm">
+        {/* Mobile: stacked cards */}
+        <div className="divide-y divide-border/60 sm:hidden">
+          {(announcements ?? []).map((a) => (
+            <Link
+              key={a.id}
+              href={`/announcements/${a.id}`}
+              className="block px-4 py-3 transition hover:bg-parchment/60"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-medium text-ink">{a.title}</p>
+                <span className="shrink-0">
+                  <StatusBadge status={a.status} />
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-ink/60">
+                {a.banner ? (
+                  <span className="capitalize">{a.banner}</span>
+                ) : (
+                  "No banner"
+                )}
+                {" · "}
+                {a.publish_date
+                  ? format(parseISO(a.publish_date), "EEE, MMM d yyyy")
+                  : "No date"}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop: table */}
+        <table className="hidden w-full text-left text-sm sm:table">
           <thead className="border-b border-border text-xs uppercase tracking-wide text-ink/50">
             <tr>
               <th className="px-5 py-3 font-medium">Title</th>

@@ -58,7 +58,7 @@ export default async function DevotionalsPage({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="font-display text-3xl sm:text-4xl">Devotionals</h1>
           <p className="mt-1 text-ink/60">
@@ -67,7 +67,7 @@ export default async function DevotionalsPage({
         </div>
         <Link
           href="/devotionals/new"
-          className="inline-flex items-center gap-2 rounded-lg bg-copper px-4 py-2 text-sm font-medium text-parchment transition hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-lg bg-copper px-4 py-2 text-sm font-medium text-parchment transition hover:opacity-90"
         >
           <Plus size={16} /> New devotional
         </Link>
@@ -121,7 +121,42 @@ export default async function DevotionalsPage({
       </div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-white">
-        <table className="w-full text-left text-sm">
+        {/* Mobile: stacked cards */}
+        <div className="divide-y divide-border/60 sm:hidden">
+          {(devotionals ?? []).map((d) => (
+            <Link
+              key={d.id}
+              href={`/devotionals/${d.id}`}
+              className="block px-4 py-3 transition hover:bg-parchment/60"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="font-medium text-ink">
+                  {d.title}
+                  {d.reading_time_minutes ? (
+                    <span className="ml-2 text-xs font-normal text-ink/40">
+                      {d.reading_time_minutes} min
+                    </span>
+                  ) : null}
+                </p>
+                <span className="shrink-0">
+                  <StatusBadge status={d.status} />
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-ink/60">
+                {d.series_id ? seriesTitle.get(d.series_id) ?? "—" : "No series"}
+                {d.day_in_series ? ` · Day ${d.day_in_series}` : ""}
+              </p>
+              <p className="mt-0.5 text-xs text-ink/45">
+                {d.publish_date
+                  ? format(parseISO(d.publish_date), "EEE, MMM d yyyy")
+                  : "No date"}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        {/* Desktop: table */}
+        <table className="hidden w-full text-left text-sm sm:table">
           <thead className="border-b border-border text-xs uppercase tracking-wide text-ink/50">
             <tr>
               <th className="px-5 py-3 font-medium">Title</th>
