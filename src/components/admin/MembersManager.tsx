@@ -12,9 +12,15 @@ import {
   ShieldCheck,
   UserPlus,
   Mail,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
 import { Modal } from "@/components/admin/Modal";
-import { updateMember, inviteStaff } from "@/app/(admin)/members/actions";
+import {
+  updateMember,
+  inviteStaff,
+  deleteMember,
+} from "@/app/(admin)/members/actions";
 import type { UserRole, Tables } from "@/lib/db";
 import {
   ROLE_LABEL,
@@ -58,11 +64,13 @@ export function MembersManager({
   houses,
   campuses,
   actorRole,
+  actorId,
 }: {
   members: Member[];
   houses: House[];
   campuses: Campus[];
   actorRole: EffectiveRole;
+  actorId: string;
 }) {
   const router = useRouter();
   const houseById = useMemo(
@@ -90,6 +98,11 @@ export function MembersManager({
   const [houseId, setHouseId] = useState<string>("");
   const [campusId, setCampusId] = useState<string>("");
   const [saving, setSaving] = useState(false);
+
+  // Delete member (retype-name confirmation)
+  const [deleting, setDeleting] = useState<Member | null>(null);
+  const [confirmName, setConfirmName] = useState("");
+  const [removing, setRemoving] = useState(false);
 
   // Invite new staff
   const [inviteOpen, setInviteOpen] = useState(false);
@@ -123,6 +136,28 @@ export function MembersManager({
     }
     toast.success("Member updated.");
     setEditing(null);
+    router.refresh();
+  }
+
+  function openDelete(m: Member) {
+    setDeleting(m);
+    setConfirmName("");
+  }
+
+  async function confirmDelete() {
+    if (!deleting) return;
+    setRemoving(true);
+    const result = await deleteMember({
+      id: deleting.id,
+      confirmName,
+    });
+    setRemoving(false);
+    if (!result.ok) {
+      toast.error(result.error);
+      return;
+    }
+    toast.success(`${deleting.name} deleted.`);
+    setDeleting(null);
     router.refresh();
   }
 
@@ -293,6 +328,17 @@ export function MembersManager({
                         <Pencil size={14} /> Edit
                       </button>
                     )}
+                    {editable && !m.is_owner && m.id !== actorId && (
+                      <button
+                        type="button"
+                        onClick={() => openDelete(m)}
+                        aria-label={`Delete ${m.name}`}
+                        title="Delete member"
+                        className="rounded-lg border border-border p-2 text-oxblood transition hover:bg-oxblood/10"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    )}
                   </div>
                 );
               })}
@@ -382,6 +428,60 @@ export function MembersManager({
             </button>
           </div>
         </div>
+      </Modal>
+
+      {/* Delete confirmation (retype name) */}
+      <Modal
+        open={deleting !== null}
+        onClose={() => setDeleting(null)}
+        title="Delete member?"
+      >
+        {deleting && (
+          <div className="space-y-4">
+            <div className="flex items-start gap-2 rounded-lg border border-oxblood/25 bg-oxblood/5 px-3 py-3 text-sm text-oxblood">
+              <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+              <span>
+                This permanently deletes <strong>{deleting.name}</strong> from
+                Mathetes: their sign-in, mobile account, and personal data
+                (messages, notes, streaks, giving history). Content they authored
+                is kept. This cannot be undone.
+              </span>
+            </div>
+            <div>
+              <label className="block text-sm text-ink/70">
+                Type{" "}
+                <span className="font-semibold text-ink">{deleting.name}</span>{" "}
+                to confirm.
+              </label>
+              <input
+                value={confirmName}
+                onChange={(e) => setConfirmName(e.target.value)}
+                autoFocus
+                autoComplete="off"
+                placeholder={deleting.name}
+                className="mt-1.5 w-full rounded-lg border border-border bg-surface-1 px-3 py-2 text-ink outline-none focus:border-oxblood"
+              />
+            </div>
+            <div className="flex justify-end gap-2 border-t border-border pt-4">
+              <button
+                type="button"
+                onClick={() => setDeleting(null)}
+                className="rounded-lg border border-border px-4 py-2 text-sm text-ink transition hover:bg-parchment"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={removing || confirmName !== deleting.name}
+                onClick={confirmDelete}
+                className="inline-flex items-center gap-2 rounded-lg bg-oxblood px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <Trash2 size={15} />
+                {removing ? "Deleting..." : "Delete this member"}
+              </button>
+            </div>
+          </div>
+        )}
       </Modal>
 
       {/* Invite modal */}

@@ -77,6 +77,102 @@ export async function updateMember(input: MemberInput): Promise<ActionResult> {
   return { ok: true };
 }
 
+const deleteSchema = z.object({
+  id: z.string().uuid(),
+  // The admin must retype the member's exact name to confirm (GitHub/Vercel
+  // style). Verified again here server-side, never trusting the client alone.
+  confirmName: z.string().trim().min(1),
+});
+
+export type DeleteInput = z.input<typeof deleteSchema>;
+
+/**
+ * Permanently delete a member from the platform. Removes the Supabase auth user
+ * via the admin API, which cascades the profile and all owned data (messages,
+ * notes, streaks, donations, etc.). Authored content (devotionals, word of the
+ * day, reading plans, series) is preserved with its author cleared, so deleting
+ * a person never deletes parish content.
+ */
+export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
+  const parsed = deleteSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+  const v = parsed.data;
+  const { supabase, profile } = await requireAdmin();
+  const actor = effectiveRole(profile);
+
+  if (!canManageStaff(actor)) {
+    return { ok: false, error: "You do not have permission to delete members." };
+  }
+  if (v.id === profile.id) {
+    return { ok: false, error: "You cannot delete your own account." };
+  }
+
+  const { data: target } = await supabase
+    .from("user_profiles")
+    .select("name, auth_id, role, is_owner")
+    .eq("id", v.id)
+    .eq("parish_id", profile.parish_id!)
+    .single();
+  if (!target) return { ok: false, error: "Member not found." };
+
+  if (target.is_owner) {
+    return { ok: false, error: "The platform owner cannot be deleted." };
+  }
+  if (!canEditTarget(actor, effectiveRole(target))) {
+    return { ok: false, error: "You cannot delete this account." };
+  }
+  if (v.confirmName !== target.name) {
+    return {
+      ok: false,
+      error: "The name you typed does not match. Deletion cancelled.",
+    };
+  }
+
+  const admin = createAdminClient();
+  if (!admin) {
+    return {
+      ok: false,
+      error:
+        "Deletion is not configured: the server is missing SUPABASE_SERVICE_ROLE_KEY.",
+    };
+  }
+
+  const parish = profile.parish_id!;
+  // Clear the restrict-default author/creator references so the cascade can
+  // proceed. Content itself stays; it just loses the (now deleted) author.
+  await Promise.all([
+    admin
+      .from("devotionals")
+      .update({ author_id: null })
+      .eq("author_id", v.id)
+      .eq("parish_id", parish),
+    admin
+      .from("word_of_day")
+      .update({ author_id: null })
+      .eq("author_id", v.id)
+      .eq("parish_id", parish),
+    admin
+      .from("reading_plans")
+      .update({ author_id: null })
+      .eq("author_id", v.id)
+      .eq("parish_id", parish),
+    admin
+      .from("devotional_series")
+      .update({ created_by: null })
+      .eq("created_by", v.id)
+      .eq("parish_id", parish),
+  ]);
+
+  // Deleting the auth user cascades the profile and all on-delete-cascade data.
+  const { error } = await admin.auth.admin.deleteUser(target.auth_id);
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/members");
+  return { ok: true };
+}
+
 const inviteSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(80),
   email: z.string().trim().toLowerCase().email("Enter a valid email"),

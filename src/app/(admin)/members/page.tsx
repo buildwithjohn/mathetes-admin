@@ -37,6 +37,7 @@ export default async function MembersPage() {
           houses={housesRes.data ?? []}
           campuses={campusesRes.data ?? []}
           actorRole={effectiveRole(profile)}
+          actorId={profile.id}
         />
       </div>
     </div>
