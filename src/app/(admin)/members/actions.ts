@@ -232,9 +232,9 @@ export async function inviteStaff(input: InviteInput): Promise<ActionResult> {
     };
   }
 
-  const redirectTo = `${await adminOrigin()}/auth/callback?next=/welcome`;
+  const redirectTo = `${await adminOrigin()}/auth/confirm?next=/welcome`;
   const { data, error } = await admin.auth.admin.inviteUserByEmail(v.email, {
-    data: { name: v.name },
+    data: { name: v.name, role: v.role },
     redirectTo,
   });
 

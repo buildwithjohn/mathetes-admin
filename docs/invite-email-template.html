@@ -1,0 +1,98 @@
+<!--
+  Mathetes staff invite email.
+
+  Paste into Supabase Dashboard -> Authentication -> Email Templates ->
+  "Invite user" -> Message body (HTML). Set the Subject to:
+
+      You're invited to the Mathetes team
+
+  Template variables used:
+    {{ .Data.name }}   the invitee's name (passed at invite time)
+    {{ .SiteURL }}     must be set to https://admin.mathetes.live
+    {{ .TokenHash }}   one-time verification token for the invite
+
+  The CTA points at our own /auth/confirm route (token-hash verification),
+  which sets the session and forwards to /welcome to set a password.
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="background:#F5F1EB;margin:0;padding:32px 12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+             style="max-width:480px;background:#ffffff;border:1px solid #E4E0D8;border-radius:16px;overflow:hidden;">
+        <!-- copper top bar -->
+        <tr><td style="height:6px;background:#B87333;line-height:6px;font-size:6px;">&nbsp;</td></tr>
+
+        <tr>
+          <td style="padding:36px 36px 8px 36px;text-align:center;">
+            <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#B87333;font-weight:700;">
+              CCCFSP FUOYE
+            </div>
+            <div style="font-family:Georgia,'Times New Roman',serif;font-size:40px;color:#1C1B1A;margin-top:6px;font-weight:500;">
+              Mathetes
+            </div>
+            <div style="font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;color:#722F37;margin-top:2px;">
+              Follow daily.
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:24px 36px 8px 36px;">
+            <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#1C1B1A;margin:0 0 12px 0;font-weight:600;">
+              You're invited to the team
+            </h1>
+            <p style="font-size:15px;line-height:1.6;color:#44403C;margin:0 0 12px 0;">
+              Hi {{ .Data.name }}, you've been added to the Mathetes admin for
+              CCCFSP FUOYE. Set your password to get started.
+            </p>
+            <p style="font-size:15px;line-height:1.6;color:#44403C;margin:0 0 24px 0;">
+              The same login works on the <strong>Mathetes mobile app</strong>,
+              so you'll only ever need one password.
+            </p>
+          </td>
+        </tr>
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:0 36px 8px 36px;" align="center">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="border-radius:12px;background:#B87333;">
+                  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/welcome"
+                     style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:12px;">
+                    Set your password
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:20px 36px 0 36px;">
+            <p style="font-size:13px;line-height:1.6;color:#78716C;margin:0 0 6px 0;">
+              Or paste this link into your browser:
+            </p>
+            <p style="font-size:12px;line-height:1.5;color:#B87333;word-break:break-all;margin:0;">
+              {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite&next=/welcome
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:28px 36px 36px 36px;border-top:1px solid #EFEBE3;margin-top:24px;">
+            <p style="font-size:12px;line-height:1.6;color:#A8A29E;margin:0;text-align:center;">
+              If you weren't expecting this invitation, you can safely ignore
+              this email. This link expires after first use.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <p style="font-family:Georgia,serif;font-style:italic;font-size:13px;color:#A8A29E;margin:20px 0 0 0;">
+        In all thy ways acknowledge him.
+      </p>
+    </td>
+  </tr>
+</table>
