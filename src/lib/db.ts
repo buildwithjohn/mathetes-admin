@@ -15,6 +15,7 @@ export type TablesUpdate<T extends keyof DB["Tables"]> = DB["Tables"][T]["Update
 // uses these literal unions for validation and exhaustive UI mapping. (Reads
 // from the loose row types are cast to these at the query boundary.)
 export type ContentStatus = "draft" | "scheduled" | "published";
+export type PlanDifficulty = "starter" | "intermediate" | "deep";
 export type UserRole =
   | "member"
   | "house_leader"

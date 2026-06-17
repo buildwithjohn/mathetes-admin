@@ -9,6 +9,7 @@ const ADMIN_PREFIXES = [
   "/dashboard",
   "/devotionals",
   "/word-of-day",
+  "/reading-plans",
   "/announcements",
   "/members",
   "/ask-pastor",
