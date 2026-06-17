@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { marked } from "marked";
 import { format } from "date-fns";
 import { Sparkles, Headphones, BookText, Loader2, Save } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
@@ -153,8 +154,17 @@ export function DayEditor({
     setDirty(true);
   }, []);
 
+  const previewHtml = useMemo(
+    () =>
+      marked.parse(reflectionBody || "_Nothing written yet._", {
+        async: false,
+      }),
+    [reflectionBody]
+  );
+
   return (
-    <div className="max-w-3xl space-y-5">
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="space-y-5">
       <div>
         <label className="block text-sm font-medium text-ink">Title</label>
         <input
@@ -301,6 +311,46 @@ export function DayEditor({
                 : ""}
         </span>
       </div>
+      </div>
+
+      {/* Mobile preview — renders the real markdown the app will render */}
+      <aside className="lg:sticky lg:top-0 lg:self-start">
+        <p className="mb-2 text-xs uppercase tracking-widest text-copper">
+          Mobile preview
+        </p>
+        <div className="overflow-hidden rounded-[2rem] border-[6px] border-ink/80 bg-parchment shadow-sm">
+          <div className="max-h-[70vh] overflow-y-auto p-5">
+            <span className="text-xs uppercase tracking-widest text-copper">
+              Day {day.day_number}
+            </span>
+            <h1 className="mt-1 font-display text-2xl text-ink">
+              {title || `Day ${day.day_number}`}
+            </h1>
+            {scriptureRef && (
+              <p className="mt-1 text-sm font-medium text-oxblood">
+                {scriptureRef}
+              </p>
+            )}
+            {scriptureText && (
+              <blockquote className="mt-3 border-l-[3px] border-oxblood pl-3 font-scripture text-[15px] italic leading-relaxed text-ink/90">
+                {scriptureText}
+              </blockquote>
+            )}
+            <div
+              className="devotional-preview mt-4"
+              dangerouslySetInnerHTML={{ __html: previewHtml }}
+            />
+            {reflectionPrompt && (
+              <div className="mt-4 rounded-xl border border-border bg-white p-3">
+                <p className="text-xs uppercase tracking-widest text-copper">
+                  Sit with this
+                </p>
+                <p className="mt-1 text-sm text-ink/80">{reflectionPrompt}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </aside>
     </div>
   );
 }

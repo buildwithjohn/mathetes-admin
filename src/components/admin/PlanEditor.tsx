@@ -15,6 +15,7 @@ import {
   Send,
   EyeOff,
   Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import { PlanForm } from "@/components/admin/PlanForm";
 import { Modal } from "@/components/admin/Modal";
@@ -163,6 +164,26 @@ export function PlanEditor({ plan, days }: { plan: Plan; days: Day[] }) {
           </button>
         </div>
       </div>
+
+      {order.length < plan.length_days && (
+        <div
+          className={cn(
+            "mt-4 flex items-start gap-2 rounded-lg border px-4 py-2.5 text-sm",
+            plan.published
+              ? "border-oxblood/30 bg-oxblood/5 text-oxblood"
+              : "border-copper/30 bg-copper/5 text-copper"
+          )}
+        >
+          <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+          <span>
+            This plan has <strong>{order.length}</strong> of{" "}
+            <strong>{plan.length_days}</strong> days authored.
+            {plan.published
+              ? " It is published with missing days — members will hit gaps. Add the remaining days or lower the length."
+              : " Add the remaining days before publishing."}
+          </span>
+        </div>
+      )}
 
       {tab === "metadata" ? (
         <div className="mt-6">

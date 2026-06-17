@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
@@ -97,6 +98,18 @@ export function RichTextEditor({
       onChange(editor.storage.markdown.getMarkdown());
     },
   });
+
+  // Keep the editor in sync when `value` changes externally (e.g. loading a
+  // different day, or "Fetch from KJV"). setContent runs through the markdown
+  // parser, so stored markdown is rendered as formatting, never literal "**".
+  // Guarded against the typing loop: skips when value already matches.
+  useEffect(() => {
+    if (!editor) return;
+    const current = editor.storage.markdown.getMarkdown();
+    if (value !== current) {
+      editor.commands.setContent(value, false);
+    }
+  }, [value, editor]);
 
   if (!editor) {
     return (
