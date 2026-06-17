@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getAdminContext } from "@/lib/auth";
 import { SidebarNav } from "@/components/admin/SidebarNav";
 import { SignOutButton } from "@/components/admin/SignOutButton";
+import { effectiveRole, capabilitiesFor, ROLE_LABEL } from "@/lib/roles";
 
 export default async function AdminLayout({
   children,
@@ -14,8 +15,8 @@ export default async function AdminLayout({
   // Middleware already redirects unauthenticated users; defense in depth.
   if (!user) redirect("/signin");
 
-  // Role gate: only pastor/admin may enter.
-  if (profile?.role !== "pastor" && profile?.role !== "admin") {
+  // Role gate: only owner / admin / pastor may enter.
+  if (!profile || (profile.role !== "pastor" && profile.role !== "admin")) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-parchment px-6 text-center">
         <div>
@@ -28,7 +29,9 @@ export default async function AdminLayout({
     );
   }
 
-  const name = profile?.name ?? user.email;
+  const name = profile.name ?? user.email;
+  const role = effectiveRole(profile);
+  const caps = capabilitiesFor(role);
 
   return (
     <div className="flex h-screen overflow-hidden bg-parchment text-ink">
@@ -39,7 +42,7 @@ export default async function AdminLayout({
             Admin
           </p>
         </div>
-        <SidebarNav />
+        <SidebarNav caps={caps} />
         <div className="border-t border-border p-3">
           <SignOutButton />
         </div>
@@ -50,6 +53,9 @@ export default async function AdminLayout({
           <span className="text-sm font-medium text-ink">CCCFSP FUOYE</span>
           <div className="flex items-center gap-2">
             <span className="text-sm text-ink/60">{name}</span>
+            <span className="rounded-full bg-copper/10 px-2 py-0.5 text-[11px] font-semibold text-copper">
+              {ROLE_LABEL[role]}
+            </span>
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-copper text-xs font-semibold text-white">
               {(name ?? "?").slice(0, 1).toUpperCase()}
             </span>

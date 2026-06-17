@@ -1,8 +1,8 @@
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 import { HousesManager } from "@/components/admin/HousesManager";
 
 export default async function HousesPage() {
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("houses");
   const parish = profile.parish_id!;
 
   const [housesRes, campusesRes, membersRes] = await Promise.all([

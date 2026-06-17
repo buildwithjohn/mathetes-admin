@@ -9,10 +9,10 @@ import {
   Flame,
   TrendingUp,
 } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 
 export default async function AnalyticsPage() {
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("analytics");
   const parish = profile.parish_id!;
   const now = new Date();
   const since7 = formatISO(subDays(now, 7));

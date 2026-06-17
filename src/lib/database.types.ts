@@ -1357,6 +1357,7 @@ export interface Database {
           campus_id: string | null;
           date_of_birth: string | null;
           phone: string | null;
+          is_owner: boolean;
         };
         Insert: {
           id?: string;
@@ -1376,6 +1377,7 @@ export interface Database {
           campus_id?: string | null;
           date_of_birth?: string | null;
           phone?: string | null;
+          is_owner?: boolean;
         };
         Update: {
           id?: string;
@@ -1395,6 +1397,7 @@ export interface Database {
           campus_id?: string | null;
           date_of_birth?: string | null;
           phone?: string | null;
+          is_owner?: boolean;
         };
         Relationships: [];
       };

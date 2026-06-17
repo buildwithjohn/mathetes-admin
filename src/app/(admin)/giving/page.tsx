@@ -1,6 +1,6 @@
 import { startOfMonth, startOfYear, subDays, formatISO } from "date-fns";
 import { HandCoins, CalendarClock, Repeat, Wallet } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 import { GivingManager } from "@/components/admin/GivingManager";
 
 // Amounts are stored in kobo; divide by 100 for naira.
@@ -13,7 +13,7 @@ function naira(kobo: number) {
 }
 
 export default async function GivingPage() {
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("giving");
   const parish = profile.parish_id!;
   const now = new Date();
   const monthStart = formatISO(startOfMonth(now));

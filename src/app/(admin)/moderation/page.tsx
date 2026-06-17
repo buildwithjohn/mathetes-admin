@@ -6,7 +6,7 @@ import {
   MessageSquareWarning,
   CheckCircle2,
 } from "lucide-react";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 import { ReportActions } from "@/components/admin/ReportActions";
 import type { ReportStatus } from "@/lib/db";
 
@@ -41,7 +41,7 @@ export default async function ModerationPage({
     ? (filter as (typeof FILTERS)[number]["value"])
     : "open";
 
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("moderation");
 
   let reportsQuery = supabase
     .from("reports")

@@ -16,27 +16,51 @@ import {
   HandCoins,
   type LucideIcon,
 } from "lucide-react";
+import type { Capability } from "@/lib/roles";
 import { cn } from "@/utils/cn";
 
-const NAV: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/devotionals", label: "Devotionals", icon: BookOpen },
-  { href: "/word-of-day", label: "Word of the Day", icon: Sun },
-  { href: "/reading-plans", label: "Reading Plans", icon: BookMarked },
-  { href: "/announcements", label: "Announcements", icon: Megaphone },
-  { href: "/houses", label: "Houses", icon: Home },
-  { href: "/members", label: "Members", icon: Users },
-  { href: "/giving", label: "Giving", icon: HandCoins },
-  { href: "/ask-pastor", label: "Ask Pastor", icon: MessageCircleQuestion },
-  { href: "/moderation", label: "Moderation", icon: ShieldAlert },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-];
+// `cap` undefined means everyone who reaches the dashboard sees it.
+const NAV: { href: string; label: string; icon: LucideIcon; cap?: Capability }[] =
+  [
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/devotionals", label: "Devotionals", icon: BookOpen, cap: "content" },
+    { href: "/word-of-day", label: "Word of the Day", icon: Sun, cap: "content" },
+    {
+      href: "/reading-plans",
+      label: "Reading Plans",
+      icon: BookMarked,
+      cap: "content",
+    },
+    {
+      href: "/announcements",
+      label: "Announcements",
+      icon: Megaphone,
+      cap: "content",
+    },
+    { href: "/houses", label: "Houses", icon: Home, cap: "houses" },
+    { href: "/members", label: "Members", icon: Users, cap: "members" },
+    { href: "/giving", label: "Giving", icon: HandCoins, cap: "giving" },
+    {
+      href: "/ask-pastor",
+      label: "Ask Pastor",
+      icon: MessageCircleQuestion,
+      cap: "ask_pastor",
+    },
+    {
+      href: "/moderation",
+      label: "Moderation",
+      icon: ShieldAlert,
+      cap: "moderation",
+    },
+    { href: "/analytics", label: "Analytics", icon: BarChart3, cap: "analytics" },
+  ];
 
-export function SidebarNav() {
+export function SidebarNav({ caps }: { caps: Capability[] }) {
   const pathname = usePathname();
+  const items = NAV.filter((n) => !n.cap || caps.includes(n.cap));
   return (
     <nav className="flex-1 space-y-0.5 overflow-y-auto px-3">
-      {NAV.map(({ href, label, icon: Icon }) => {
+      {items.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
         return (
           <Link

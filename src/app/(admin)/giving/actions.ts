@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
+import { can } from "@/lib/roles";
 import type { TablesInsert } from "@/lib/db";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -30,6 +31,9 @@ export async function saveFund(input: FundInput): Promise<ActionResult> {
   }
   const v = parsed.data;
   const { supabase, profile } = await requireAdmin();
+  if (!can(profile, "giving")) {
+    return { ok: false, error: "You do not have permission to manage giving." };
+  }
 
   const row: TablesInsert<"giving_funds"> = {
     parish_id: profile.parish_id!,
@@ -58,6 +62,9 @@ export async function setFundActive(
   active: boolean
 ): Promise<ActionResult> {
   const { supabase, profile } = await requireAdmin();
+  if (!can(profile, "giving")) {
+    return { ok: false, error: "You do not have permission to manage giving." };
+  }
   const { error } = await supabase
     .from("giving_funds")
     .update({ active })

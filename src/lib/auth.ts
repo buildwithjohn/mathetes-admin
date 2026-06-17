@@ -2,10 +2,11 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/lib/db";
+import { canAccessAdmin, can, type Capability } from "@/lib/roles";
 
 export type AdminProfile = Pick<
   Tables<"user_profiles">,
-  "id" | "name" | "role" | "parish_id"
+  "id" | "name" | "role" | "parish_id" | "is_owner"
 >;
 
 export type AdminContext = {
@@ -30,7 +31,7 @@ export const getAdminContext = cache(async (): Promise<AdminContext> => {
 
   const { data } = await supabase
     .from("user_profiles")
-    .select("id, name, role, parish_id")
+    .select("id, name, role, parish_id, is_owner")
     .eq("auth_id", user.id)
     .single();
 
@@ -48,7 +49,7 @@ export const getAdminContext = cache(async (): Promise<AdminContext> => {
 export async function requireAdmin() {
   const { user, profile } = await getAdminContext();
   if (!user) redirect("/signin");
-  if (!profile || (profile.role !== "pastor" && profile.role !== "admin")) {
+  if (!profile || !canAccessAdmin(profile)) {
     // The (admin) layout renders the friendly not-authorized screen; bouncing
     // here keeps Server Actions from acting without a valid role.
     redirect("/dashboard");
@@ -56,4 +57,15 @@ export async function requireAdmin() {
   // createClient() is itself cheap and request-scoped; reuse it for queries.
   const supabase = await createClient();
   return { supabase, profile };
+}
+
+/**
+ * Like requireAdmin, but also requires a specific capability. Pages for
+ * management surfaces (members, giving, houses, moderation, analytics) use this
+ * so a signed-in pastor can't reach them by typing the URL.
+ */
+export async function requireCapability(cap: Capability) {
+  const ctx = await requireAdmin();
+  if (!can(ctx.profile, cap)) redirect("/dashboard");
+  return ctx;
 }
