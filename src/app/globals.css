@@ -175,3 +175,38 @@ body {
   color: var(--copper);
   text-decoration: underline;
 }
+
+/* ------------------------------------------------------------------ */
+/* Sign-in animated illustration                                       */
+/* ------------------------------------------------------------------ */
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50%      { transform: translateY(-22px) translateX(10px); }
+}
+@keyframes auth-pulse-ring {
+  0%   { transform: scale(0.7); opacity: 0.55; }
+  70%  { opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+@keyframes auth-rise {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  12%  { opacity: 0.8; }
+  100% { transform: translateY(-220px) scale(0.4); opacity: 0; }
+}
+@keyframes auth-sheen {
+  0%, 100% { opacity: 0.35; transform: translate(-10%, -10%) scale(1); }
+  50%      { opacity: 0.6;  transform: translate(10%, 8%) scale(1.15); }
+}
+@keyframes auth-spin-slow { to { transform: rotate(360deg); } }
+
+.anim-float      { animation: auth-float 8s ease-in-out infinite; }
+.anim-float-rev  { animation: auth-float 11s ease-in-out infinite reverse; }
+.anim-ring       { animation: auth-pulse-ring 4.5s ease-out infinite; }
+.anim-rise       { animation: auth-rise 7s linear infinite; }
+.anim-sheen      { animation: auth-sheen 12s ease-in-out infinite; }
+.anim-spin-slow  { animation: auth-spin-slow 60s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float, .anim-float-rev, .anim-ring, .anim-rise,
+  .anim-sheen, .anim-spin-slow { animation: none; }
+}
