@@ -19,7 +19,7 @@ export const ROLE_LABEL: Record<EffectiveRole, string> = {
   owner: "Owner",
   admin: "Admin",
   pastor: "Pastor",
-  house_leader: "Leader",
+  house_leader: "House Leader",
   discipler: "Discipler",
   member: "Student",
 };
