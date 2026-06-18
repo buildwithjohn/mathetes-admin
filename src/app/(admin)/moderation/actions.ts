@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAdmin } from "@/lib/auth";
+import { requireCapability } from "@/lib/auth";
 
 const resolveSchema = z.object({
   id: z.string().uuid(),
@@ -19,7 +19,7 @@ export async function setReportStatus(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const v = parsed.data;
-  const { supabase, profile } = await requireAdmin();
+  const { supabase, profile } = await requireCapability("moderation");
 
   const resolving = v.status === "resolved" || v.status === "dismissed";
   const { error } = await supabase
