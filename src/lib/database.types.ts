@@ -250,6 +250,7 @@ export interface Database {
           slug: string;
           name: string;
           is_primary: boolean;
+          allowed_email_domains: string[];
           created_at: string;
         };
         Insert: {
@@ -258,6 +259,7 @@ export interface Database {
           slug: string;
           name: string;
           is_primary?: boolean;
+          allowed_email_domains?: string[];
           created_at?: string;
         };
         Update: {
@@ -266,6 +268,7 @@ export interface Database {
           slug?: string;
           name?: string;
           is_primary?: boolean;
+          allowed_email_domains?: string[];
           created_at?: string;
         };
         Relationships: [];
@@ -1391,6 +1394,7 @@ export interface Database {
           date_of_birth: string | null;
           phone: string | null;
           is_owner: boolean;
+          status: string;
         };
         Insert: {
           id?: string;
@@ -1411,6 +1415,7 @@ export interface Database {
           date_of_birth?: string | null;
           phone?: string | null;
           is_owner?: boolean;
+          status?: string;
         };
         Update: {
           id?: string;
@@ -1431,6 +1436,7 @@ export interface Database {
           date_of_birth?: string | null;
           phone?: string | null;
           is_owner?: boolean;
+          status?: string;
         };
         Relationships: [];
       };

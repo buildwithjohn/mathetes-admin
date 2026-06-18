@@ -22,7 +22,7 @@ import {
   inviteStaff,
   deleteMember,
 } from "@/app/(admin)/members/actions";
-import type { UserRole, Tables } from "@/lib/db";
+import type { UserRole, MemberStatus, Tables } from "@/lib/db";
 import {
   ROLE_LABEL,
   ROLE_HINT,
@@ -40,6 +40,7 @@ type Member = Pick<
   | "name"
   | "role"
   | "is_owner"
+  | "status"
   | "house_id"
   | "campus_id"
   | "year"
@@ -48,6 +49,27 @@ type Member = Pick<
   | "date_of_birth"
   | "photo_url"
 >;
+
+const STATUS_LABEL: Record<MemberStatus, string> = {
+  pending: "Pending",
+  active: "Active",
+  rejected: "Rejected",
+  suspended: "Suspended",
+};
+
+const STATUS_STYLE: Record<MemberStatus, string> = {
+  pending: "bg-copper/10 text-copper",
+  active: "bg-surface-2 text-ink/50",
+  rejected: "bg-oxblood/10 text-oxblood",
+  suspended: "bg-oxblood/10 text-oxblood",
+};
+
+const STATUS_OPTIONS: MemberStatus[] = [
+  "active",
+  "pending",
+  "suspended",
+  "rejected",
+];
 type House = Pick<Tables<"houses">, "id" | "name" | "color">;
 type Campus = Pick<Tables<"campuses">, "id" | "name">;
 type Deletion = Pick<
@@ -102,6 +124,7 @@ export function MembersManager({
   // Edit existing member
   const [editing, setEditing] = useState<Member | null>(null);
   const [role, setRole] = useState<UserRole>("member");
+  const [status, setStatus] = useState<MemberStatus>("active");
   const [houseId, setHouseId] = useState<string>("");
   const [campusId, setCampusId] = useState<string>("");
   const [saving, setSaving] = useState(false);
@@ -123,6 +146,7 @@ export function MembersManager({
   function openEdit(m: Member) {
     setEditing(m);
     setRole(m.role as UserRole);
+    setStatus((m.status as MemberStatus) ?? "active");
     setHouseId(m.house_id ?? "");
     setCampusId(m.campus_id ?? "");
   }
@@ -133,6 +157,7 @@ export function MembersManager({
     const result = await updateMember({
       id: editing.id,
       role,
+      status,
       houseId: houseId || null,
       campusId: campusId || null,
     });
@@ -316,6 +341,16 @@ export function MembersManager({
                             Owner
                           </span>
                         )}
+                        {m.status && m.status !== "active" && (
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-0.5 text-[11px] font-semibold",
+                              STATUS_STYLE[m.status as MemberStatus]
+                            )}
+                          >
+                            {STATUS_LABEL[m.status as MemberStatus]}
+                          </span>
+                        )}
                       </p>
                       <p className="truncate text-xs text-ink/50">
                         {ROLE_LABEL[mRole]}
@@ -424,6 +459,24 @@ export function MembersManager({
               ))}
             </select>
             <p className="mt-1 text-xs text-ink/50">{ROLE_HINT[role]}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-ink">Status</label>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value as MemberStatus)}
+              className="mt-1 w-full rounded-lg border border-border bg-surface-1 px-3 py-2 text-ink outline-none focus:border-copper"
+            >
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {STATUS_LABEL[s]}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-ink/50">
+              Suspended and rejected members lose access. Pending members are
+              awaiting approval.
+            </p>
           </div>
           <div>
             <label className="block text-sm font-medium text-ink">House</label>

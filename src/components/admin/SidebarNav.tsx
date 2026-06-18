@@ -10,6 +10,7 @@ import {
   Megaphone,
   Home,
   Users,
+  UserCheck,
   MessageCircleQuestion,
   ShieldAlert,
   BarChart3,
@@ -39,6 +40,12 @@ const NAV: { href: string; label: string; icon: LucideIcon; cap?: Capability }[]
     },
     { href: "/houses", label: "Houses", icon: Home, cap: "houses" },
     { href: "/members", label: "Members", icon: Users, cap: "members" },
+    {
+      href: "/approvals",
+      label: "Approvals",
+      icon: UserCheck,
+      cap: "approvals",
+    },
     { href: "/giving", label: "Giving", icon: HandCoins, cap: "giving" },
     {
       href: "/ask-pastor",
@@ -55,13 +62,20 @@ const NAV: { href: string; label: string; icon: LucideIcon; cap?: Capability }[]
     { href: "/analytics", label: "Analytics", icon: BarChart3, cap: "analytics" },
   ];
 
-export function SidebarNav({ caps }: { caps: Capability[] }) {
+export function SidebarNav({
+  caps,
+  pendingCount = 0,
+}: {
+  caps: Capability[];
+  pendingCount?: number;
+}) {
   const pathname = usePathname();
   const items = NAV.filter((n) => !n.cap || caps.includes(n.cap));
   return (
     <nav className="flex-1 space-y-0.5 overflow-y-auto px-3">
       {items.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(href + "/");
+        const badge = href === "/approvals" && pendingCount > 0 ? pendingCount : 0;
         return (
           <Link
             key={href}
@@ -79,6 +93,11 @@ export function SidebarNav({ caps }: { caps: Capability[] }) {
               className={active ? "text-copper" : "text-ink/50"}
             />
             {label}
+            {badge > 0 && (
+              <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-copper/15 px-1.5 py-0.5 text-xs font-semibold text-copper">
+                {badge}
+              </span>
+            )}
           </Link>
         );
       })}

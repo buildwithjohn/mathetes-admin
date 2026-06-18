@@ -38,6 +38,7 @@ export type Capability =
   | "houses"
   | "members" // view + manage member placement and roles
   | "staff" // onboard new staff, change elevated roles
+  | "approvals" // approve/reject pending members, configure campus domains
   | "giving"
   | "moderation"
   | "analytics"
@@ -49,6 +50,7 @@ const CAPABILITIES: Record<EffectiveRole, Capability[]> = {
     "houses",
     "members",
     "staff",
+    "approvals",
     "giving",
     "moderation",
     "analytics",
@@ -61,6 +63,7 @@ const CAPABILITIES: Record<EffectiveRole, Capability[]> = {
     "houses",
     "members",
     "staff",
+    "approvals",
     "giving",
     "moderation",
     "analytics",

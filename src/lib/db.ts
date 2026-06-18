@@ -22,6 +22,7 @@ export type UserRole =
   | "discipler"
   | "pastor"
   | "admin";
+export type MemberStatus = "pending" | "active" | "rejected" | "suspended";
 export type AskPrivacy = "public" | "private";
 export type AskStatus = "awaiting" | "answered";
 export type ReportTargetType =

@@ -18,11 +18,13 @@ export function AdminShell({
   name,
   roleLabel,
   caps,
+  pendingCount,
   children,
 }: {
   name: string;
   roleLabel: string;
   caps: Capability[];
+  pendingCount: number;
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -76,7 +78,7 @@ export function AdminShell({
             <X size={20} />
           </button>
         </div>
-        <SidebarNav caps={caps} />
+        <SidebarNav caps={caps} pendingCount={pendingCount} />
         <div className="border-t border-border p-3">
           <SignOutButton />
         </div>

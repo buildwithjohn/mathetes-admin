@@ -24,6 +24,7 @@ const roleEnum = z.enum([
 const memberSchema = z.object({
   id: z.string().uuid(),
   role: roleEnum,
+  status: z.enum(["pending", "active", "rejected", "suspended"]),
   houseId: z.string().uuid().nullable(),
   campusId: z.string().uuid().nullable(),
 });
@@ -68,7 +69,12 @@ export async function updateMember(input: MemberInput): Promise<ActionResult> {
   // deliberate operation.
   const { error } = await supabase
     .from("user_profiles")
-    .update({ role: v.role, house_id: v.houseId, campus_id: v.campusId })
+    .update({
+      role: v.role,
+      status: v.status,
+      house_id: v.houseId,
+      campus_id: v.campusId,
+    })
     .eq("id", v.id)
     .eq("parish_id", profile.parish_id!);
 

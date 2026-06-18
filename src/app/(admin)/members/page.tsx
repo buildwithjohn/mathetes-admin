@@ -9,7 +9,7 @@ export default async function MembersPage() {
     supabase
       .from("user_profiles")
       .select(
-        "id, name, role, is_owner, house_id, campus_id, year, dept, phone, date_of_birth, photo_url"
+        "id, name, role, is_owner, status, house_id, campus_id, year, dept, phone, date_of_birth, photo_url"
       )
       .eq("parish_id", profile.parish_id!)
       .order("name"),
