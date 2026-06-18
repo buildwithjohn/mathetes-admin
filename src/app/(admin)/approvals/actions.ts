@@ -8,10 +8,9 @@ import { can } from "@/lib/roles";
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
 /**
- * Approve a pending member: mark active and route them to a campus. Done as a
- * direct status update under the existing user_profiles_admin_write policy. If
- * the backend later ships an approve_member RPC (with side effects), switch
- * this to call it; a status-change trigger is the cleaner backend option.
+ * Approve a pending member via the backend RPC (0025). It sets status=active,
+ * assigns the campus, and routes them to that campus's parish — and enforces
+ * is_parish_admin() + that the campus belongs to the admin's parish.
  */
 const approveSchema = z.object({
   userId: z.string().uuid(),
@@ -31,12 +30,10 @@ export async function approveMember(
     return { ok: false, error: "You do not have permission to approve members." };
   }
 
-  const { error } = await supabase
-    .from("user_profiles")
-    .update({ status: "active", campus_id: v.campusId })
-    .eq("id", v.userId)
-    .eq("parish_id", profile.parish_id!)
-    .eq("status", "pending");
+  const { error } = await supabase.rpc("approve_member", {
+    p_user: v.userId,
+    p_campus: v.campusId,
+  });
   if (error) return { ok: false, error: error.message };
 
   revalidatePath("/approvals");
@@ -52,11 +49,7 @@ export async function rejectMember(userId: string): Promise<ActionResult> {
   if (!can(profile, "approvals")) {
     return { ok: false, error: "You do not have permission to reject members." };
   }
-  const { error } = await supabase
-    .from("user_profiles")
-    .update({ status: "rejected" })
-    .eq("id", userId)
-    .eq("parish_id", profile.parish_id!);
+  const { error } = await supabase.rpc("reject_member", { p_user: userId });
   if (error) return { ok: false, error: error.message };
 
   revalidatePath("/approvals");

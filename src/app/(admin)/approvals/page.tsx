@@ -6,13 +6,19 @@ export default async function ApprovalsPage() {
   const { supabase, profile } = await requireCapability("approvals");
   const parish = profile.parish_id!;
 
+  // Pending members have NO parish yet, and RLS hides them from admins, so list
+  // them with the service-role client. The approve RPC re-checks authorization
+  // and that the chosen campus is in the admin's parish.
+  const admin = createAdminClient();
+
   const [pendingRes, campusesRes] = await Promise.all([
-    supabase
-      .from("user_profiles")
-      .select("id, name, auth_id, joined_at")
-      .eq("parish_id", parish)
-      .eq("status", "pending")
-      .order("joined_at", { ascending: true }),
+    admin
+      ? admin
+          .from("user_profiles")
+          .select("id, name, auth_id, joined_at")
+          .eq("status", "pending")
+          .order("joined_at", { ascending: true })
+      : Promise.resolve({ data: [] as { id: string; name: string; auth_id: string; joined_at: string }[] }),
     supabase
       .from("campuses")
       .select("id, name, slug, is_primary, allowed_email_domains")
@@ -25,7 +31,6 @@ export default async function ApprovalsPage() {
   const campuses = campusesRes.data ?? [];
 
   // Emails live on auth.users; resolve them with the service-role client.
-  const admin = createAdminClient();
   const emailById = new Map<string, string>();
   if (admin && pendingRows.length > 0) {
     await Promise.all(

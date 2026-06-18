@@ -1,12 +1,18 @@
 import { requireCapability } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { effectiveRole } from "@/lib/roles";
 import { MembersManager } from "@/components/admin/MembersManager";
 
 export default async function MembersPage() {
   const { supabase, profile } = await requireCapability("members");
 
+  // Read the directory with the service-role client: RLS (0025) now hides
+  // non-active members, but an admin must still see suspended/rejected members
+  // to manage (reactivate) them. Scoped to the admin's parish.
+  const membersClient = createAdminClient() ?? supabase;
+
   const [membersRes, housesRes, campusesRes, deletionsRes] = await Promise.all([
-    supabase
+    membersClient
       .from("user_profiles")
       .select(
         "id, name, role, is_owner, status, house_id, campus_id, year, dept, phone, date_of_birth, photo_url"

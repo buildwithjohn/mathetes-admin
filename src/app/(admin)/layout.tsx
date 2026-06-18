@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAdminContext } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { effectiveRole, capabilitiesFor, ROLE_LABEL } from "@/lib/roles";
 
@@ -33,17 +33,18 @@ export default async function AdminLayout({
   const role = effectiveRole(profile);
   const caps = capabilitiesFor(role);
 
-  // Pending-approval count for the nav badge. Guarded: if the `status` column
-  // is not deployed yet, the query errors and we simply show no badge.
+  // Pending-approval count for the nav badge. Pending members have no parish
+  // and RLS hides them from admins, so count with the service-role client.
   let pendingCount = 0;
   if (caps.includes("approvals")) {
-    const supabase = await createClient();
-    const { count } = await supabase
-      .from("user_profiles")
-      .select("id", { count: "exact", head: true })
-      .eq("parish_id", profile.parish_id!)
-      .eq("status", "pending");
-    pendingCount = count ?? 0;
+    const admin = createAdminClient();
+    if (admin) {
+      const { count } = await admin
+        .from("user_profiles")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "pending");
+      pendingCount = count ?? 0;
+    }
   }
 
   return (

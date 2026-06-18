@@ -45,8 +45,13 @@ export async function updateMember(input: MemberInput): Promise<ActionResult> {
     return { ok: false, error: "You do not have permission to manage members." };
   }
 
+  // RLS (0025) hides non-active members, but an admin must be able to manage
+  // (e.g. reactivate) them. Use the service-role client for the target row;
+  // authorization is enforced by the app-layer guardrails below.
+  const db = createAdminClient() ?? supabase;
+
   // Inspect the target so we can enforce who-may-edit-whom and who-may-grant.
-  const { data: target } = await supabase
+  const { data: target } = await db
     .from("user_profiles")
     .select("role, is_owner")
     .eq("id", v.id)
@@ -67,7 +72,7 @@ export async function updateMember(input: MemberInput): Promise<ActionResult> {
 
   // is_owner is intentionally never changed here; owner transfer is a separate,
   // deliberate operation.
-  const { error } = await supabase
+  const { error } = await db
     .from("user_profiles")
     .update({
       role: v.role,
@@ -105,7 +110,7 @@ export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   const v = parsed.data;
-  const { supabase, profile } = await requireAdmin();
+  const { profile } = await requireAdmin();
   const actor = effectiveRole(profile);
 
   if (!canManageStaff(actor)) {
@@ -115,7 +120,17 @@ export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
     return { ok: false, error: "You cannot delete your own account." };
   }
 
-  const { data: target } = await supabase
+  const admin = createAdminClient();
+  if (!admin) {
+    return {
+      ok: false,
+      error:
+        "Deletion is not configured: the server is missing SUPABASE_SERVICE_ROLE_KEY.",
+    };
+  }
+
+  // Service-role read: RLS (0025) hides non-active members from the admin.
+  const { data: target } = await admin
     .from("user_profiles")
     .select("name, auth_id, role, is_owner")
     .eq("id", v.id)
@@ -133,15 +148,6 @@ export async function deleteMember(input: DeleteInput): Promise<ActionResult> {
     return {
       ok: false,
       error: "The name you typed does not match. Deletion cancelled.",
-    };
-  }
-
-  const admin = createAdminClient();
-  if (!admin) {
-    return {
-      ok: false,
-      error:
-        "Deletion is not configured: the server is missing SUPABASE_SERVICE_ROLE_KEY.",
     };
   }
 

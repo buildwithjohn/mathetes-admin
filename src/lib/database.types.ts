@@ -1641,6 +1641,11 @@ export interface Database {
       current_house_id: { Args: Record<string, never>; Returns: string };
       current_user_role: { Args: Record<string, never>; Returns: string };
       is_parish_admin: { Args: Record<string, never>; Returns: boolean };
+      approve_member: {
+        Args: { p_user: string; p_campus: string };
+        Returns: undefined;
+      };
+      reject_member: { Args: { p_user: string }; Returns: undefined };
       is_blocked_by_me: { Args: { p_target: string }; Returns: boolean };
       is_chat_member: { Args: { p_chat: string }; Returns: boolean };
       is_chat_leader: { Args: { p_chat: string }; Returns: boolean };
