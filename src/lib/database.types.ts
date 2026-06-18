@@ -1647,6 +1647,19 @@ export interface Database {
       };
       reject_member: { Args: { p_user: string }; Returns: undefined };
       set_my_campus: { Args: { p_campus: string }; Returns: undefined };
+      list_pending_members: {
+        Args: Record<string, never>;
+        Returns: {
+          id: string;
+          name: string;
+          email: string;
+          created_at: string;
+        }[];
+      };
+      resolve_report: {
+        Args: { p_report: string; p_status: string };
+        Returns: undefined;
+      };
       is_blocked_by_me: { Args: { p_target: string }; Returns: boolean };
       is_chat_member: { Args: { p_chat: string }; Returns: boolean };
       is_chat_leader: { Args: { p_chat: string }; Returns: boolean };

@@ -21,18 +21,25 @@ export async function setReportStatus(
   const v = parsed.data;
   const { supabase, profile } = await requireCapability("moderation");
 
-  const resolving = v.status === "resolved" || v.status === "dismissed";
-  const { error } = await supabase
-    .from("reports")
-    .update({
-      status: v.status,
-      resolved_by: resolving ? profile.id : null,
-      resolved_at: resolving ? new Date().toISOString() : null,
-    })
-    .eq("id", v.id)
-    .eq("parish_id", profile.parish_id!);
+  if (v.status === "open") {
+    // Reopen is portal-only (the shared resolve_report RPC accepts only
+    // reviewing|resolved|dismissed); clear the resolution via a direct update.
+    const { error } = await supabase
+      .from("reports")
+      .update({ status: "open", resolved_by: null, resolved_at: null })
+      .eq("id", v.id)
+      .eq("parish_id", profile.parish_id!);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    // Shared with the mobile Oversight tab: resolve_report stamps resolved_by
+    // and resolved_at, so both surfaces behave identically.
+    const { error } = await supabase.rpc("resolve_report", {
+      p_report: v.id,
+      p_status: v.status,
+    });
+    if (error) return { ok: false, error: error.message };
+  }
 
-  if (error) return { ok: false, error: error.message };
   revalidatePath("/moderation");
   return { ok: true };
 }
