@@ -23,6 +23,7 @@ export type UserRole =
   | "pastor"
   | "admin";
 export type MemberStatus = "pending" | "active" | "rejected" | "suspended";
+export type LibraryKind = "book" | "manual" | "audio" | "video";
 export type AskPrivacy = "public" | "private";
 export type AskStatus = "awaiting" | "answered";
 export type ReportTargetType =

@@ -7,6 +7,7 @@ import {
   BookOpen,
   Sun,
   BookMarked,
+  Library,
   Megaphone,
   Home,
   Users,
@@ -38,6 +39,7 @@ const NAV: { href: string; label: string; icon: LucideIcon; cap?: Capability }[]
       icon: Megaphone,
       cap: "content",
     },
+    { href: "/library", label: "Library", icon: Library, cap: "content" },
     { href: "/houses", label: "Houses", icon: Home, cap: "houses" },
     { href: "/members", label: "Members", icon: Users, cap: "members" },
     {
