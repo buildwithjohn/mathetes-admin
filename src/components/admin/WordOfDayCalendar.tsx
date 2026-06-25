@@ -29,6 +29,7 @@ type Wotd = Pick<
   | "verse_ref"
   | "verse_text"
   | "reflection_md"
+  | "prayer_md"
   | "prompt"
   | "publish_date"
   | "status"
@@ -57,6 +58,7 @@ export function WordOfDayCalendar({
   const [verseRef, setVerseRef] = useState("");
   const [verseText, setVerseText] = useState("");
   const [reflection, setReflection] = useState("");
+  const [prayer, setPrayer] = useState("");
   const [prompt, setPrompt] = useState("");
   const [editingId, setEditingId] = useState<string | undefined>();
   const [saving, setSaving] = useState(false);
@@ -73,6 +75,7 @@ export function WordOfDayCalendar({
     setVerseRef(w?.verse_ref ?? "");
     setVerseText(w?.verse_text ?? "");
     setReflection(w?.reflection_md ?? "");
+    setPrayer(w?.prayer_md ?? "");
     setPrompt(w?.prompt ?? "");
   }
 
@@ -88,6 +91,7 @@ export function WordOfDayCalendar({
       verseRef,
       verseText,
       reflectionMd: reflection || null,
+      prayerMd: prayer || null,
       prompt: prompt || null,
       publishDate: selected,
       status,
@@ -102,6 +106,7 @@ export function WordOfDayCalendar({
       verse_ref: verseRef,
       verse_text: verseText,
       reflection_md: reflection || null,
+      prayer_md: prayer || null,
       prompt: prompt || null,
       publish_date: selected,
       status,
@@ -276,6 +281,19 @@ export function WordOfDayCalendar({
 
           <div>
             <label className="block text-sm font-medium text-ink">
+              Prayer guide <span className="text-ink/40">(optional)</span>
+            </label>
+            <textarea
+              value={prayer}
+              onChange={(e) => setPrayer(e.target.value)}
+              rows={4}
+              placeholder="A short prayer to guide the reader. Markdown supported. Shows as a 'Pray' block in the app."
+              className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink">
               Prompt <span className="text-ink/40">(optional)</span>
             </label>
             <input
@@ -300,6 +318,16 @@ export function WordOfDayCalendar({
                 <p className="mt-3 text-sm leading-relaxed text-ink/80">
                   {reflection}
                 </p>
+              )}
+              {prayer && (
+                <div className="mt-3 rounded-lg border border-copper/20 bg-copper/5 p-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-copper">
+                    Pray
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink/80">
+                    {prayer}
+                  </p>
+                </div>
               )}
             </div>
           )}

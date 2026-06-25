@@ -10,6 +10,7 @@ const wotdSchema = z.object({
   verseRef: z.string().trim().min(1, "Verse reference is required").max(120),
   verseText: z.string().trim().min(1, "Verse text is required"),
   reflectionMd: z.string().trim().nullable().optional(),
+  prayerMd: z.string().trim().nullable().optional(),
   prompt: z.string().trim().nullable().optional(),
   publishDate: z
     .string()
@@ -38,6 +39,7 @@ export async function saveWordOfDay(
     verse_ref: v.verseRef,
     verse_text: v.verseText,
     reflection_md: v.reflectionMd ?? null,
+    prayer_md: v.prayerMd ?? null,
     prompt: v.prompt ?? null,
     publish_date: v.publishDate,
     status: v.status,
