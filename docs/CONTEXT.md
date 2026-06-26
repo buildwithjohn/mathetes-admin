@@ -132,6 +132,15 @@ content (`devotionals`, `word_of_day`, `reading_plans`+`_days`, `announcements`,
 - Giving is private: no public donor lists; amounts in kobo.
 - Pending/suspended/rejected members are walled off (backend RLS); the admin app
   doesn't leak them into the directory beyond management screens.
+- **Leader reach (backend 0033, decision ratified by John).** Two student
+  guardrails were made role-aware so leaders aren't trapped in student scope:
+  (1) the mobile parish **directory** now shows the whole parish to parish admins
+  (students still see active members only); (2) `create_dm` lets owner/pastor/admin
+  DM any active parish member cross-house and **bypass cross-gender approval** for
+  pastoral care, and lets a member DM their own disciples. This is **initiation**
+  reach only — it does **not** widen DM oversight/reading (0029 stands; DMs remain
+  private to participants). No admin-portal code change; the portal already reads
+  the full membership via the service role.
 
 ---
 
