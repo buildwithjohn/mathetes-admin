@@ -1,5 +1,7 @@
 # Mathetes Admin
 
+> 📖 Source of truth: [`docs/CONTEXT.md`](docs/CONTEXT.md) — stack, sections, Supabase writes, cross-repo contracts, and outstanding tasks. (Cross-repo master: `mathetes-mobile/docs/WORKSPACE.md`.)
+
 Next.js 15 admin dashboard + marketing landing for Mathetes.
 
 ## Quick start
