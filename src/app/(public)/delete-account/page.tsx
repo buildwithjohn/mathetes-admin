@@ -79,6 +79,18 @@ export default function DeleteAccountPage() {
         able to sign in, and you would need to sign up again to use Mathetes.
       </p>
 
+      <h2>Deleting only some of your data</h2>
+      <p>
+        You do not have to close your account to remove information. If you would
+        rather keep your account but delete specific data, for example your
+        profile photo, your phone number, or a particular message, email{" "}
+        <a href={`mailto:${CONTACT}?subject=Delete some of my Mathetes data`}>
+          {CONTACT}
+        </a>{" "}
+        and tell us exactly what to remove. We will confirm once it is done,
+        usually within 30 days, and your account stays active.
+      </p>
+
       <h2>Questions</h2>
       <p>
         Any questions about your data or this process? Email{" "}
