@@ -265,12 +265,18 @@ export async function inviteStaff(input: InviteInput): Promise<ActionResult> {
   if (!authId) return { ok: false, error: "Invite sent but no user was returned." };
 
   // The handle_new_user trigger already created the profile (role 'member',
-  // pilot parish). Elevate it to the chosen role + placement.
+  // pilot parish). But the trigger sets status/parish from the email DOMAIN, so
+  // a staff member invited on a non-school email (e.g. gmail) lands 'pending'
+  // with a null parish and can neither use the app nor be messaged. Onboarding
+  // is a deliberate admin action, so activate them into the admin's parish here.
+  // (Service-role update, so the self-escalation guard permits these changes.)
   const { error: upErr } = await admin
     .from("user_profiles")
     .update({
       role: v.role,
       name: v.name,
+      status: "active",
+      parish_id: profile.parish_id,
       house_id: v.houseId ?? null,
       campus_id: v.campusId ?? null,
     })
