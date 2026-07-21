@@ -78,7 +78,7 @@ export async function saveLibraryItem(
   if (v.id) {
     row.id = v.id;
   } else {
-    row.created_by = profile.id;
+    row.author_id = profile.id;
   }
 
   const { error } = await supabase.from("library_items").upsert(row);

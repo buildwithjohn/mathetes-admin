@@ -31,9 +31,9 @@ export default async function MembersPage() {
       .order("name"),
     supabase
       .from("member_deletions")
-      .select("id, actor_name, target_name, target_email, target_role, created_at")
+      .select("id, actor_name, target_name, target_email, target_role, deleted_at")
       .eq("parish_id", profile.parish_id!)
-      .order("created_at", { ascending: false })
+      .order("deleted_at", { ascending: false })
       .limit(20),
   ]);
 

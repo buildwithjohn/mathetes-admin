@@ -74,7 +74,7 @@ type House = Pick<Tables<"houses">, "id" | "name" | "color">;
 type Campus = Pick<Tables<"campuses">, "id" | "name">;
 type Deletion = Pick<
   Tables<"member_deletions">,
-  "id" | "actor_name" | "target_name" | "target_email" | "target_role" | "created_at"
+  "id" | "actor_name" | "target_name" | "target_email" | "target_role" | "deleted_at"
 >;
 
 function initials(name: string) {
@@ -428,7 +428,7 @@ export function MembersManager({
                 <span className="ml-auto text-ink/50">
                   removed by{" "}
                   <span className="text-ink/70">{d.actor_name}</span> ·{" "}
-                  {formatDistanceToNow(parseISO(d.created_at), {
+                  {formatDistanceToNow(parseISO(d.deleted_at), {
                     addSuffix: true,
                   })}
                 </span>
