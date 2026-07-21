@@ -49,7 +49,7 @@ page (`requireCapability`).
 | **Devotionals** [content] | `/devotionals` | TipTap rich-text editor (verse block), series, scripture refs, reading-time, draft autosave, mobile preview, schedule/publish/delete; audio/video URL | `devotionals`, `devotional_series`, `content_assets` |
 | **Word of the Day** [content] | `/word-of-day` | 3-month calendar, side-sheet composer (verse ref/text, reflection, **prayer guide**, prompt), 1-per-day, preview | `word_of_day` (incl. `prayer_md`) |
 | **Reading Plans** [content] | `/reading-plans` | Plan metadata + per-day editor (scripture, markdown reflection, prompt), KJV fetch, missing-day warnings, reorder, publish | `reading_plans`, `reading_plan_days` |
-| **Formation practices** [content] | upcoming | House Quests, Campus Missions, Fellowship Events and their pastoral publishing flow; the RLS-protected backend foundation is live | `formation_campaigns`, `fellowship_events` |
+| **Formation** [content] | `/formation` | Create/publish scoped House Quests, Campus Missions, and Fellowship Events; completion and RSVP remain private to each student | `formation_campaigns`, `fellowship_events` |
 | **Announcements** [content] | `/announcements` | Compose parish announcements w/ banner, photos, event data; publish | `announcements` |
 | **Library** [content] | `/library` | Books/manuals (PDF), audio sermons, video messages (URL or mp4); cover upload; publish toggle | `library_items`, `content-media` bucket |
 | **Houses** [houses] | `/houses` | CRUD per campus, 7-colour palette, leader assignment, soft-archive | `houses` (insert triggers `house_group` chat) |
@@ -174,8 +174,8 @@ all three repos are canonical):
 **Not yet built (nice-to-have):** live realtime sync so mobile-handled items vanish
 here without a refresh.
 
-**Formation practices (backend 0038, LIVE foundation):** the public-facing
-surfaces are next: authors create scoped House Quests/Campus Missions and
-Fellowship Events; students see only published items for their own house/campus,
+**Formation practices (backend 0038, LIVE):** `/formation` lets content admins
+create, scope, publish, draft, and remove House Quests/Campus Missions and
+Fellowship Events. Students see only published items for their own house/campus,
 then record private completion/RSVP state. Private rhythms, collections, and
 prayer answers never appear in the admin portal or a leaderboard.

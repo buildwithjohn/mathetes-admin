@@ -16,6 +16,7 @@ import {
   ShieldAlert,
   BarChart3,
   HandCoins,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 import type { Capability } from "@/lib/roles";
@@ -33,6 +34,7 @@ const NAV: { href: string; label: string; icon: LucideIcon; cap?: Capability }[]
       icon: BookMarked,
       cap: "content",
     },
+    { href: "/formation", label: "Formation", icon: Compass, cap: "content" },
     {
       href: "/announcements",
       label: "Announcements",
