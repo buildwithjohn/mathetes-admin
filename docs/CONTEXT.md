@@ -146,6 +146,11 @@ content (`devotionals`, `word_of_day`, `reading_plans`+`_days`, `announcements`,
 
 ## 6. Status & outstanding tasks
 
+**Content reliability (backend 0035):** scheduling for today/past publishes in
+the same database transaction; future scheduled content becomes readable on its
+date even if the publisher cron is late. No composer workflow change is needed.
+The cron remains responsible for morning notification fan-out.
+
 **Built & live** (✅): Approvals queue, Houses CRUD (+ house_group chat), Reading-
 plan authoring, Library section, Word prayer-guide field, markdown-emit fix,
 Giving funds CRUD + analytics — plus Devotionals, WOTD, Announcements, Ask-Pastor,
