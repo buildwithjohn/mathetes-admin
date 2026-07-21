@@ -31,6 +31,7 @@ type Wotd = Pick<
   | "reflection_md"
   | "prayer_md"
   | "prompt"
+  | "cover_image_url"
   | "publish_date"
   | "status"
 >;
@@ -60,6 +61,7 @@ export function WordOfDayCalendar({
   const [reflection, setReflection] = useState("");
   const [prayer, setPrayer] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [coverImageUrl, setCoverImageUrl] = useState("");
   const [editingId, setEditingId] = useState<string | undefined>();
   const [saving, setSaving] = useState(false);
 
@@ -77,6 +79,7 @@ export function WordOfDayCalendar({
     setReflection(w?.reflection_md ?? "");
     setPrayer(w?.prayer_md ?? "");
     setPrompt(w?.prompt ?? "");
+    setCoverImageUrl(w?.cover_image_url ?? "");
   }
 
   function close() {
@@ -93,6 +96,7 @@ export function WordOfDayCalendar({
       reflectionMd: reflection || null,
       prayerMd: prayer || null,
       prompt: prompt || null,
+      coverImageUrl: coverImageUrl || null,
       publishDate: selected,
       status,
     });
@@ -108,6 +112,7 @@ export function WordOfDayCalendar({
       reflection_md: reflection || null,
       prayer_md: prayer || null,
       prompt: prompt || null,
+      cover_image_url: coverImageUrl || null,
       publish_date: selected,
       status,
     };
@@ -249,6 +254,18 @@ export function WordOfDayCalendar({
               value={verseRef}
               onChange={(e) => setVerseRef(e.target.value)}
               placeholder="Proverbs 3:5-6"
+              className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-ink">
+              Cover image URL <span className="text-ink/40">(optional)</span>
+            </label>
+            <input
+              value={coverImageUrl}
+              onChange={(e) => setCoverImageUrl(e.target.value)}
+              placeholder="https://…/cover.jpg"
               className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
             />
           </div>

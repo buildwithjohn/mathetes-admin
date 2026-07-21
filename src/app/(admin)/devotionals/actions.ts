@@ -28,6 +28,7 @@ const devotionalSchema = z
       .nullable()
       .optional()
       .or(z.literal("")),
+    coverImageUrl: z.string().trim().url("Cover image must be a URL").nullable().optional().or(z.literal("")),
     publishDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
     status: z.enum(["draft", "scheduled", "published"]),
   })
@@ -62,6 +63,7 @@ export async function saveDevotional(
     reading_time_minutes: v.readingTimeMinutes ?? null,
     audio_url: v.audioUrl ? v.audioUrl : null,
     video_url: v.videoUrl ? v.videoUrl : null,
+    cover_image_url: v.coverImageUrl ? v.coverImageUrl : null,
     publish_date: v.publishDate ?? null,
     status: v.status,
   };

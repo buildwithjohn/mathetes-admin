@@ -410,6 +410,7 @@ export interface Database {
           created_at: string;
           updated_at: string;
           video_url: string | null;
+          cover_image_url: string | null;
         };
         Insert: {
           id?: string;
@@ -427,6 +428,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
           video_url?: string | null;
+          cover_image_url?: string | null;
         };
         Update: {
           id?: string;
@@ -1548,6 +1550,7 @@ export interface Database {
           reflection_md: string | null;
           prayer_md: string | null;
           prompt: string | null;
+          cover_image_url: string | null;
           author_id: string | null;
           publish_date: string | null;
           status: string;
@@ -1561,6 +1564,7 @@ export interface Database {
           reflection_md?: string | null;
           prayer_md?: string | null;
           prompt?: string | null;
+          cover_image_url?: string | null;
           author_id?: string | null;
           publish_date?: string | null;
           status?: string;
@@ -1574,6 +1578,7 @@ export interface Database {
           reflection_md?: string | null;
           prayer_md?: string | null;
           prompt?: string | null;
+          cover_image_url?: string | null;
           author_id?: string | null;
           publish_date?: string | null;
           status?: string;

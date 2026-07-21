@@ -15,7 +15,7 @@ export default async function EditDevotionalPage({
   const { data: devotional } = await supabase
     .from("devotionals")
     .select(
-      "id, title, series_id, day_in_series, body_md, scripture_refs, reading_time_minutes, audio_url, video_url, publish_date, status"
+      "id, title, series_id, day_in_series, body_md, scripture_refs, reading_time_minutes, audio_url, video_url, cover_image_url, publish_date, status"
     )
     .eq("id", id)
     .eq("parish_id", profile.parish_id!)

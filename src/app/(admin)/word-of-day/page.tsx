@@ -12,7 +12,7 @@ export default async function WordOfDayPage() {
   const { data: existing } = await supabase
     .from("word_of_day")
     .select(
-      "id, verse_ref, verse_text, reflection_md, prayer_md, prompt, publish_date, status"
+      "id, verse_ref, verse_text, reflection_md, prayer_md, prompt, cover_image_url, publish_date, status"
     )
     .eq("parish_id", profile.parish_id!)
     .gte("publish_date", todayStr)

@@ -37,6 +37,7 @@ type InitialDevotional = Pick<
   | "reading_time_minutes"
   | "audio_url"
   | "video_url"
+  | "cover_image_url"
   | "publish_date"
   | "status"
 >;
@@ -69,6 +70,7 @@ export function DevotionalEditor({
   );
   const [audioUrl, setAudioUrl] = useState(initial?.audio_url ?? "");
   const [videoUrl, setVideoUrl] = useState(initial?.video_url ?? "");
+  const [coverImageUrl, setCoverImageUrl] = useState(initial?.cover_image_url ?? "");
   const [publishDate, setPublishDate] = useState(initial?.publish_date ?? "");
 
   const [seriesList, setSeriesList] = useState<SeriesOption[]>(series);
@@ -128,6 +130,7 @@ export function DevotionalEditor({
       readingTimeMinutes: readingTime ? Number(readingTime) : null,
       audioUrl: audioUrl || null,
       videoUrl: videoUrl || null,
+      coverImageUrl: coverImageUrl || null,
       publishDate: publishDate || null,
       status,
     }),
@@ -140,6 +143,7 @@ export function DevotionalEditor({
       scriptureRefs,
       readingTime,
       videoUrl,
+      coverImageUrl,
       audioUrl,
       publishDate,
     ]
@@ -409,6 +413,18 @@ export function DevotionalEditor({
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="block text-sm font-medium text-ink">
+              Cover image URL <span className="font-normal text-ink/40">(optional)</span>
+            </label>
+            <input
+              type="url"
+              value={coverImageUrl}
+              onChange={(e) => { setCoverImageUrl(e.target.value); markDirty(); }}
+              placeholder="https://…/cover.jpg"
+              className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
+            />
+          </div>
           <div>
             <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
               <Headphones size={15} className="text-copper" /> Audio URL{" "}

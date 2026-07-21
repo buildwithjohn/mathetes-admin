@@ -12,6 +12,7 @@ const wotdSchema = z.object({
   reflectionMd: z.string().trim().nullable().optional(),
   prayerMd: z.string().trim().nullable().optional(),
   prompt: z.string().trim().nullable().optional(),
+  coverImageUrl: z.string().trim().url("Cover image must be a URL").nullable().optional().or(z.literal("")),
   publishDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "A publish date is required"),
@@ -41,6 +42,7 @@ export async function saveWordOfDay(
     reflection_md: v.reflectionMd ?? null,
     prayer_md: v.prayerMd ?? null,
     prompt: v.prompt ?? null,
+    cover_image_url: v.coverImageUrl ? v.coverImageUrl : null,
     publish_date: v.publishDate,
     status: v.status,
   };
