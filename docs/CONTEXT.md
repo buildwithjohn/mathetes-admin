@@ -160,6 +160,17 @@ and current thought. These remain parish-scoped via the ordinary profile RLS
 rule; they are not a public activity feed. Admin member management retains the
 same role/status authority and does not expose a new social graph.
 
+**Daily encouragement and library (backend 0048–0049):** Word and devotional
+cards can show parish-scoped Amen/share totals in mobile. The admin surface must
+never expose the identities behind those actions or turn them into rankings.
+Members can privately save a Word and write a devotional reflection; those
+personal records stay out of admin reporting.
+
+**Private formation badges (backend 0050):** the app awards small milestones
+from actual private practices. They are intentionally absent from admin
+analytics and member profiles: no completion policing, rankings, or public
+recognition is permitted.
+
 **Built & live** (✅): Approvals queue, Houses CRUD (+ house_group chat), Reading-
 plan authoring, Library section, Word prayer-guide field, markdown-emit fix,
 Giving funds CRUD + analytics — plus Devotionals, WOTD, Announcements, Ask-Pastor,
