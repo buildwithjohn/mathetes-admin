@@ -155,6 +155,11 @@ the same database transaction; future scheduled content becomes readable on its
 date even if the publisher cron is late. No composer workflow change is needed.
 The cron remains responsible for morning notification fan-out.
 
+**Member profile presence (backend 0047):** active members may add a short bio
+and current thought. These remain parish-scoped via the ordinary profile RLS
+rule; they are not a public activity feed. Admin member management retains the
+same role/status authority and does not expose a new social graph.
+
 **Built & live** (✅): Approvals queue, Houses CRUD (+ house_group chat), Reading-
 plan authoring, Library section, Word prayer-guide field, markdown-emit fix,
 Giving funds CRUD + analytics — plus Devotionals, WOTD, Announcements, Ask-Pastor,
