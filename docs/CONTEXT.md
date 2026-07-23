@@ -46,7 +46,7 @@ page (`requireCapability`).
 | Section | Route | Does | Writes |
 |---|---|---|---|
 | **Dashboard** | `/dashboard` | At-a-glance: today's WOTD, week's devotionals, pending Ask-Pastor | reads only |
-| **Devotionals** [content] | `/devotionals` | TipTap rich-text editor (verse block), series, scripture refs, reading-time, draft autosave, mobile preview, schedule/publish/delete; audio/video URL | `devotionals`, `devotional_series`, `content_assets` |
+| **Devotionals** [content] | `/devotionals` | TipTap rich-text editor (verse block), series, scripture refs, reading-time, draft autosave, mobile preview, schedule/publish/delete; **narration URL or upload**, video URL | `devotionals`, `devotional_series`, `content_assets`, `content-media` |
 | **Word of the Day** [content] | `/word-of-day` | 3-month calendar, side-sheet composer (verse ref/text, reflection, **prayer guide**, prompt), 1-per-day, preview | `word_of_day` (incl. `prayer_md`) |
 | **Reading Plans** [content] | `/reading-plans` | Plan metadata + per-day editor (scripture, markdown reflection, prompt), KJV fetch, missing-day warnings, reorder, publish | `reading_plans`, `reading_plan_days` |
 | **Formation** [content] | `/formation` | Create/publish scoped House Quests, Campus Missions, and Fellowship Events; completion and RSVP remain private to each student | `formation_campaigns`, `fellowship_events` |
@@ -114,6 +114,9 @@ content (`devotionals`, `word_of_day`, `reading_plans`+`_days`, `announcements`,
   `devotional_id`. Admin-authored only.
 - **Word prayer guide.** `word_of_day.prayer_md` (markdown) — mobile shows it as a
   "Pray" block under the reflection.
+- **Devotional narration.** Upload MP3/M4A/AAC/WAV/OGG directly in the
+  Devotional editor (or paste a hosted URL). The file is stored in the public
+  `content-media` bucket under `devotionals/`; only parish admins can write it.
 - **Library / media hub.** `library_items` (`kind` book/manual/audio/video; PDFs,
   audio, mp4 → `content-media` bucket, or external video URL; cover image;
   `published`/`published_at`). Mobile reads published items.

@@ -14,6 +14,9 @@ import {
   Send,
   Headphones,
   Video,
+  UploadCloud,
+  Loader2,
+  ExternalLink,
 } from "lucide-react";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Modal } from "@/components/admin/Modal";
@@ -23,6 +26,7 @@ import {
   createSeries,
 } from "@/app/(admin)/devotionals/actions";
 import { readingTimeMinutes } from "@/lib/content";
+import { createClient } from "@/lib/supabase/client";
 import type { ContentStatus, Tables } from "@/lib/db";
 
 type SeriesOption = Pick<Tables<"devotional_series">, "id" | "title">;
@@ -50,6 +54,7 @@ export function DevotionalEditor({
   series: SeriesOption[];
 }) {
   const router = useRouter();
+  const audioFileRef = useRef<HTMLInputElement>(null);
 
   const [id, setId] = useState<string | undefined>(initial?.id);
   const [title, setTitle] = useState(initial?.title ?? "");
@@ -80,6 +85,7 @@ export function DevotionalEditor({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [newSeriesOpen, setNewSeriesOpen] = useState(false);
   const [newSeriesTitle, setNewSeriesTitle] = useState("");
+  const [uploadingAudio, setUploadingAudio] = useState(false);
 
   // Keep the latest values available to the autosave interval without
   // re-subscribing on every keystroke.
@@ -90,6 +96,32 @@ export function DevotionalEditor({
   }>({ values: () => ({ title: "", status: "draft" }), dirty, saving });
 
   const markDirty = () => setDirty(true);
+
+  async function uploadAudio(file: File) {
+    if (!file.type.startsWith("audio/")) {
+      toast.error("Choose an audio file (MP3, M4A, AAC, WAV, or OGG).");
+      return;
+    }
+
+    setUploadingAudio(true);
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "mp3";
+    const path = `devotionals/${crypto.randomUUID()}.${ext}`;
+    const supabase = createClient();
+    const { error } = await supabase.storage
+      .from("content-media")
+      .upload(path, file, { upsert: false, contentType: file.type });
+    setUploadingAudio(false);
+
+    if (error) {
+      toast.error(`Audio upload failed: ${error.message}`);
+      return;
+    }
+
+    const { data } = supabase.storage.from("content-media").getPublicUrl(path);
+    setAudioUrl(data.publicUrl);
+    markDirty();
+    toast.success("Narration uploaded. Save or publish this devotional to attach it.");
+  }
 
   const onBodyChange = useCallback(
     (md: string) => {
@@ -427,7 +459,7 @@ export function DevotionalEditor({
           </div>
           <div>
             <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
-              <Headphones size={15} className="text-copper" /> Audio URL{" "}
+              <Headphones size={15} className="text-copper" /> Narration{" "}
               <span className="font-normal text-ink/40">(optional)</span>
             </label>
             <input
@@ -437,9 +469,48 @@ export function DevotionalEditor({
                 setAudioUrl(e.target.value);
                 markDirty();
               }}
-              placeholder="https://...mp3"
+              placeholder="Paste an audio URL, or upload below"
               className="mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-ink outline-none focus:border-copper"
             />
+            <input
+              ref={audioFileRef}
+              type="file"
+              accept="audio/mpeg,audio/mp4,audio/aac,audio/wav,audio/ogg,.mp3,.m4a,.aac,.wav,.ogg"
+              hidden
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void uploadAudio(file);
+                e.currentTarget.value = "";
+              }}
+            />
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                disabled={uploadingAudio}
+                onClick={() => audioFileRef.current?.click()}
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-3 py-1.5 text-sm text-ink/70 transition hover:bg-parchment disabled:opacity-50"
+              >
+                {uploadingAudio ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : (
+                  <UploadCloud size={14} />
+                )}
+                {uploadingAudio ? "Uploading narration…" : "Upload narration"}
+              </button>
+              {audioUrl ? (
+                <a
+                  href={audioUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex max-w-full items-center gap-1 truncate text-xs text-copper hover:underline"
+                >
+                  <ExternalLink size={12} /> Narration attached
+                </a>
+              ) : null}
+            </div>
+            <p className="mt-2 text-xs text-ink/45">
+              MP3, M4A, AAC, WAV, or OGG. Uploads are available in the devotional reader after you save.
+            </p>
           </div>
           <div>
             <label className="flex items-center gap-1.5 text-sm font-medium text-ink">
