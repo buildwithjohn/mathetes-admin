@@ -45,6 +45,10 @@ export default function PrivacyPage() {
         <li>Prayer requests you post</li>
         <li>Devotional engagement (what you read, your streaks)</li>
         <li>Reading plan reflections you write</li>
+        <li>
+          Circle teaching recordings, only where a Circle owner or admin visibly
+          starts a recording in a live Circle meeting
+        </li>
       </ul>
 
       <h2>What we do with it</h2>
@@ -76,19 +80,14 @@ export default function PrivacyPage() {
           engagement at a glance.
         </li>
         <li>
-          <strong>Your house leader</strong> has oversight of house group chats
-          and of direct messages <em>within their house</em> &mdash; for
-          pastoral care, not surveillance.
-        </li>
-        <li>
           <strong>Your discipler</strong> sees your one-to-one discipler
           conversations, and <em>optionally</em> your reading plan reflections{" "}
           <strong>only if you explicitly choose to share them</strong>.
         </li>
         <li>
           <strong>Direct messages</strong> are seen only by the people in the
-          conversation and the relevant house leader. No one else &mdash; not
-          even the pastor &mdash; reads your DMs.
+          conversation. A reported message may be reviewed by authorised parish
+          leaders for safety; no one routinely reads private DMs.
         </li>
         <li>
           <strong>Reading plan reflections are private by default.</strong> What
@@ -97,6 +96,15 @@ export default function PrivacyPage() {
         </li>
       </ul>
 
+      <h2>Circle meeting recordings</h2>
+      <p>
+        Circle meetings are never recorded automatically. If a Circle owner or
+        admin starts recording a teaching, everyone in that meeting sees a clear
+        recording notice and Circle members receive a notification. Finished
+        recordings are private to that Circle and are available only while a
+        member remains in it.
+      </p>
+
       <h2>Where your data is stored</h2>
       <p>
         Your data is stored with Supabase, our database and authentication
@@ -104,6 +112,11 @@ export default function PrivacyPage() {
         strong data-protection standards. As a Nigerian ministry serving Nigerian
         students, we treat your information as sensitive personal data and handle
         it accordingly.
+      </p>
+      <p>
+        Private Circle teaching recordings are stored in a private Cloudflare
+        R2 bucket and delivered only through short-lived access links after
+        Mathetes confirms Circle membership.
       </p>
 
       <h2>How long we keep it</h2>
